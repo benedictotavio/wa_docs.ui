@@ -18,7 +18,7 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
                 </NavLink>
             </div>
 
-            <menu className="d-flex flex-column justify-content-start align-items-start w-100 p-0">
+            <menu className="d-flex flex-column">
                 <div className="d-flex flex-row">
                     <input type="text" className="form-control" placeholder="Pesquisar" />
                     <button className="btn btn-primary">

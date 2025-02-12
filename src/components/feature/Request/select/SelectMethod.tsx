@@ -7,18 +7,17 @@ const SelectMethod: React.FC = () => {
         setSelectedMethod(event.target.value);
     };
     return (
-        <div>
-            <select
-                value={selectedMethod}
-                onChange={handleMethodChange}
-            >
-                {methods.map((method) => (
-                    <option key={method} value={method}>
-                        {method}
-                    </option>
-                ))}
-            </select>
-        </div>
+        <select 
+            value={selectedMethod}
+            onChange={handleMethodChange}
+            className="form-select form-select-sm" 
+            aria-label=".form-select-sm example">
+            {
+                methods.map((method) => (
+                    <option key={method} value={method}>{method}</option>
+                ))
+            }
+        </select>
     );
 };
 

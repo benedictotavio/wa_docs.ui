@@ -14,38 +14,43 @@ const Request: React.FC = () => {
 
     return (
         <div>
-            <div>
-                <div>
-                    <div className="row my-3">
-                        <div className="col-md-12 d-flex flex-row justify-content-center">
-                            <SelectMethod />
-                            <InputUri />
-                            <ButtonExecute
-                                onClick={() => {
-                                    setResponse("Response");
-                                }}
-                            />
-                        </div>
-                    </div>
-                    <Tabs
-                        tabsContent={[
-                            {
-                                title: "Headers",
-                                content: <TableHeaders />,
-                            },
-                            {
-                                title: "Body",
-                                content: <InputBody value={body} onChange={
-                                    (value) => setBody(value)
-                                } />,
-                            },
-                        ]}
-                    />
-                </div>
+            <div className="d-flex flex-row justify-content-center my-3">
+                <SelectMethod />
+                <InputUri />
+                <ButtonExecute
+                    onClick={() => {
+                        setResponse("{'message': 'Hello World!'}");
+                    }}
+                />
             </div>
-            <div>
-                <BoxResponse response={response} />
-            </div>
+            <Tabs
+                stylesTab="bordered-bottom"
+                tabsContent={[
+                    {
+                        title: "Headers",
+                        content: <TableHeaders />,
+                    },
+                    {
+                        title: "Body",
+                        content: <InputBody value={body} onChange={
+                            (value) => setBody(value)
+                        } />,
+                    },
+                    {
+                        title: "Auth",
+                        content: <BoxResponse response={response} />,
+                    },
+                    {
+                        title: "Vars",
+                        content: <h3>Variaveis</h3>,
+                    },
+                    {
+                        title: "Histórico",
+                        content: <h3>Histórico</h3>,
+                    }
+                ]}
+            />
+            <BoxResponse response={response} statusCode={200} />
         </div>
     );
 };

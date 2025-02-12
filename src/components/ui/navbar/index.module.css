@@ -6,7 +6,7 @@
     background: radial-gradient(circle at 0% 1%, #4D81D5 0%, #0047BA 100%);
     z-index: 100;
     padding-inline: 7%;
-    min-height: 250px;
+    min-height: 200px;
     color: #fff;
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
@@ -21,6 +21,25 @@
     font-size: 1.2rem;
     font-family: "Questrial", sans-serif;
     color: #000;
+  }
+
+  .user_profile {
+    display: flex;
+    flex-direction: column;
+    text-align: end;
+  }
+
+  .user_profile span:first-child {
+    font-size: 1rem;
+    font-family: "Questrial", sans-serif;
+    color: #fff;
+  }
+
+  .user_profile span {
+    font-size: 0.75rem;
+    font-family: "Questrial", sans-serif;
+    color: #707070;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
   
   .menu_mobile {
