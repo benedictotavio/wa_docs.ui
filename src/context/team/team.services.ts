@@ -13,7 +13,7 @@ const useTeam = () => {
 
   const getTeams = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/v1/teams`);
+      const response = await fetch(`${API_URL}/teams`);
       const data = await response.json();
       setTeams(data);
       setLoading(false);
@@ -24,7 +24,7 @@ const useTeam = () => {
 
   const getTeam = async (teamId: number) => {
     try {
-      const response = await fetch(`${API_URL}/api/v1/teams/${teamId}`);
+      const response = await fetch(`${API_URL}/teams/${teamId}`);
       const data = await response.json();
       setTeam(data);
       return data;
@@ -35,7 +35,7 @@ const useTeam = () => {
 
   const addTeam = async (team: Team) => {
     try {
-      const response = await fetch(`${API_URL}/api/v1/teams`, {
+      const response = await fetch(`${API_URL}/teams`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +52,7 @@ const useTeam = () => {
 
   const updateTeam = async (team: Team) => {
     try {
-      const response = await fetch(`${API_URL}/api/v1/teams/${team.team_id}`, {
+      const response = await fetch(`${API_URL}/teams/${team.team_id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +71,7 @@ const useTeam = () => {
 
   const deleteTeam = async (teamId: number) => {
     try {
-      await fetch(`${API_URL}/api/v1/teams/${teamId}`, {
+      await fetch(`${API_URL}/teams/${teamId}`, {
         method: "DELETE",
       });
       setTeams(teams.filter((team) => team["team_id"] !== teamId));

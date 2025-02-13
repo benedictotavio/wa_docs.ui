@@ -12,7 +12,7 @@ const useProject = () => {
 
   const getProjects = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/v1/projects`);
+      const response = await fetch(`${API_URL}/projects`);
       const data = await response.json();
       setProjects(data);
       setLoading(false);
@@ -23,7 +23,7 @@ const useProject = () => {
 
   const addProject = async (project: Project) => {
     try {
-      const response = await fetch(`${API_URL}/api/v1/projects`, {
+      const response = await fetch(`${API_URL}/projects`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,7 +40,7 @@ const useProject = () => {
 
   const updateProject = async (project: Project) => {
     try {
-      const response = await fetch(`${API_URL}/api/v1/projects/${project.id}`, {
+      const response = await fetch(`${API_URL}/projects/${project.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ const useProject = () => {
 
   const deleteProject = async (projectId: number) => {
     try {
-      await fetch(`${API_URL}/api/v1/projects/${projectId}`, {
+      await fetch(`${API_URL}/projects/${projectId}`, {
         method: "DELETE",
       });
       setProjects(projects.filter((project) => project.id !== projectId));

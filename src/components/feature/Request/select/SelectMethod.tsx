@@ -1,23 +1,27 @@
 import { useState } from "react";
+import Select from "../../../../design/selects/select/Select";
 
 const SelectMethod: React.FC = () => {
     const [selectedMethod, setSelectedMethod] = useState("GET");
-    const methods = ["GET", "POST", "PUT", "DELETE"];
     const handleMethodChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedMethod(event.target.value);
     };
     return (
-        <select 
-            value={selectedMethod}
+        <Select
             onChange={handleMethodChange}
-            className="form-select form-select-sm" 
-            aria-label=".form-select-sm example">
-            {
-                methods.map((method) => (
-                    <option key={method} value={method}>{method}</option>
-                ))
-            }
-        </select>
+            value={selectedMethod}
+            options={[
+                { value: "GET", label: "GET" },
+                { value: "POST", label: "POST" },
+                { value: "PUT", label: "PUT" },
+                { value: "DELETE", label: "DELETE" },
+                { value: "PATCH", label: "PATCH" },
+                { value: "HEAD", label: "HEAD" },
+                { value: "OPTIONS", label: "OPTIONS" },
+                { value: "TRACE", label: "TRACE" },
+                { value: "CONNECT", label: "CONNECT" },
+            ]}
+        />
     );
 };
 

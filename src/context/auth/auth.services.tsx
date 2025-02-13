@@ -12,7 +12,7 @@ const useAuth = () => {
     const navigate = useNavigate();
 
     const signUp = async (data: SignUpInterface): Promise<{ token: string }> => {
-        return await fetch(`${API_URL}/api/v1/auth/signup`, {
+        return await fetch(`${API_URL}/auth/signup`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -20,7 +20,7 @@ const useAuth = () => {
             body: JSON.stringify(data),
         }).then((res) => {
             if (res.status === 201) {
-                navigate("/login");
+                navigate("/");
                 return res.json();
             }
         })
@@ -31,7 +31,7 @@ const useAuth = () => {
     }
 
     const login = async (email: string, password: string): Promise<{ token: string }> => {
-        return await fetch(`${API_URL}/api/v1/auth/login`, {
+        return await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

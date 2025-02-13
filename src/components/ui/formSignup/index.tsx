@@ -11,7 +11,7 @@ const FormSignup = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [role, setRole] = useState('')
+  const [role, setRole] = useState('USER')
 
   const handleSubmit = async (e: FormEvent) => {
 
@@ -26,7 +26,7 @@ const FormSignup = () => {
       email,
       password,
       confirmPassword,
-      role: role
+      role
     }).then(() => {
       setUsername('')
       setEmail('')
@@ -40,10 +40,10 @@ const FormSignup = () => {
 
   return (
     <Form onSubmit={handleSubmit} buttonText="Registrar">
-      <InputText type="text" onChange={(e) => setUsername(e.target.value)} value={username} placeholder="Username" />
+      <InputText type="text" onChange={(e) => setUsername(e.target.value)} value={username} placeholder="Nome de usuário" />
       <InputText type="email" onChange={(e) => setEmail(e.target.value)} value={email} placeholder="Email" />
-      <InputText type="password" onChange={(e) => setPassword(e.target.value)} value={password} placeholder="Password" />
-      <InputText type="password" onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} placeholder="Confirm Password" />
+      <InputText type="password" onChange={(e) => setPassword(e.target.value)} value={password} placeholder="Senha" />
+      <InputText type="password" onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} placeholder="Confirme a senha" />
     </Form>
   )
 }
