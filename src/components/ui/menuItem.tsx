@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Folder } from "../../interfaces/folder.interface";
+import { FolderContext } from "../../context/folder/folder.context";
 
 interface MenuItemProps {
   text: string;
-  folders?: { id: number; name: string }[];
+  folders?: Folder[];
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({ text, folders }) => {
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const {createSubFolder, getTree} = useContext(FolderContext);
 
   return (
     <li className="list-group-item border-0">
@@ -30,8 +34,8 @@ const MenuItem: React.FC<MenuItemProps> = ({ text, folders }) => {
       {isOpen && folders!.length > 0 && (
         <ul>
           {folders!.map((folder) => (
-            <li key={folder.id} className="list-group-item border-0">
-              <span>{folder.name}</span>
+            <li key={folder.folderId} className="list-group-item border-0">
+              <span>{folder.folderName}</span>
             </li>
           ))}
         </ul>

@@ -1,3 +1,4 @@
+import { Folder } from "./folder.interface";
 import { Team } from "./team.interface";
 import { User } from "./user.interface";
 
@@ -7,4 +8,5 @@ export interface Project {
   name: string;
   owner: User;
   team: Team;
+  folders: Folder[];
 }

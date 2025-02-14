@@ -1,11 +1,20 @@
 import styles from "./index.module.css";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import List from "../lists/list";
 import { NavLink } from "react-router-dom";
 import Dropdown from "../../../design/dropdown/dropdown";
+import { UserContext } from "../../../context/users/users.context";
+import { TeamContext } from "../../../context/team/team.context";
+import { AuthContext } from "../../../context/auth/auth.context";
+import TeamPanel from "../../feature/Team";
+import { Team } from "../../../interfaces/team.interface";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { user } = useContext(UserContext)
+  const { teams } = useContext(TeamContext)
+  const { logout } = useContext(AuthContext)
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -16,7 +25,7 @@ const Navbar: React.FC = () => {
       <div className="d-flex justify-content-between">
         <div className={styles.user_profile}>
           <span>
-            Username
+            {user?.username}
           </span>
           <span>
             cargo
@@ -33,16 +42,20 @@ const Navbar: React.FC = () => {
     );
   };
 
+  const [actualTeam, setActualTeam] = useState<Team>(teams[0]);
+
+  useEffect(() => {
+    setActualTeam(teams[0]);
+  }, [teams]);
+
+  const changeTeam = (team: Team) => {
+    setActualTeam(team);
+  };
+
   return (
     <nav className={styles.navbar}>
-      <div>
-        <h3>
-          Team 01
-        </h3>
-        <p>
-          loorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
-      </div>
+
+      <TeamPanel team={actualTeam} />
 
       <menu type="toolbar" className={styles.menu}>
         <div>
@@ -57,15 +70,21 @@ const Navbar: React.FC = () => {
                   <li>Equipes</li>
                   <li>
                     <ul className="list-group">
-                      <li className="list-group-item active">Cras justo odio</li>
-                      <li className="list-group-item">Dapibus ac facilisis in</li>
-                      <li className="list-group-item">Morbi leo risus</li>
-                      <li className="list-group-item">Porta ac consectetur ac</li>
-                      <li className="list-group-item">Vestibulum at eros</li>
+                      {
+                        teams?.map((team) => (
+                          <li key={team.team_id} className="list-group-item">
+                            <button onClick={() => changeTeam(team)}>
+                              {team.name}
+                            </button>
+                          </li>
+                        ))
+                      }
                     </ul>
                   </li>
                   <li>-------------------</li>
-                  <li>Sair</li>
+                  <li>
+                    <button onClick={logout}>Sair</button>
+                  </li>
                 </List>
               </Dropdown>
             </li>

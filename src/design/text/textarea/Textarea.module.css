@@ -1,0 +1,17 @@
+.textarea {
+    width: 100%;
+    color: #000;
+}
+
+.textarea::placeholder {
+    color: #999;
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: 'Questrial', sans-serif;
+}
+
+.textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}

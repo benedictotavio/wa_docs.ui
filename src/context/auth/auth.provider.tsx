@@ -5,14 +5,14 @@ import { AuthContext } from "./auth.context";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
-    const { isAuthenticated, login, signUp, user } = useAuth();
+    const { isAuthenticated, login, signUp, logout } = useAuth();
 
     const value = useMemo(() => ({
         isAuthenticated,
         login,
         signUp,
-        user
-    }), [isAuthenticated, login, signUp, user]);
+        logout
+    }), [isAuthenticated, login, signUp, logout]);
 
     return (
         <AuthContext.Provider value={value}>

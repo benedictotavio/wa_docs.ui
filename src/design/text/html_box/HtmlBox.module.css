@@ -1,0 +1,43 @@
+.html_box {
+  color: #000;
+  font-family: "Roboto", sans-serif;
+}
+
+.html_box p {
+  margin: 20px 5px;
+}
+
+.html_box h1 {
+  margin: 20px 5px;
+  font-weight: bolder;
+}
+
+.html_box h2 {
+  margin: 20px 5px;
+  font-weight: bolder;
+}
+
+.html_box h3 {
+  margin: 20px 5px;
+  font-weight: bolder;
+}
+
+.html_box h4 {
+  margin: 20px 5px;
+  font-weight: bolder;
+}
+
+.html_box a {
+  color: #000;
+  text-decoration: none;
+}
+
+.html_box a:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+.html_box li {
+  margin: 0 30px;
+  list-style-type: disc;
+}

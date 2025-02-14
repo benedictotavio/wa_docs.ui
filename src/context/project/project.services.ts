@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Project } from "../../interfaces/project.interfaces";
 import { useNavigate } from "react-router-dom";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import _fetch from "../utils/fetch";
 
 const useProject = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -11,19 +10,22 @@ const useProject = () => {
   const navigate = useNavigate();
 
   const getProjects = async () => {
+    setLoading(true);
     try {
-      const response = await fetch(`${API_URL}/projects`);
-      const data = await response.json();
-      setProjects(data);
-      setLoading(false);
+      const response = await _fetch(`/project?owner=${localStorage.getItem("user")}`, {
+        includeCredentials: true,
+      });
+      setProjects(response);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const addProject = async (project: Project) => {
     try {
-      const response = await fetch(`${API_URL}/projects`, {
+      const response = await _fetch(`/projects`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,7 +42,7 @@ const useProject = () => {
 
   const updateProject = async (project: Project) => {
     try {
-      const response = await fetch(`${API_URL}/projects/${project.id}`, {
+      const response = await _fetch(`/projects/${project.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +61,7 @@ const useProject = () => {
 
   const deleteProject = async (projectId: number) => {
     try {
-      await fetch(`${API_URL}/projects/${projectId}`, {
+      await _fetch(`/projects/${projectId}`, {
         method: "DELETE",
       });
       setProjects(projects.filter((project) => project.id !== projectId));
@@ -68,9 +70,9 @@ const useProject = () => {
     }
   };
 
-  useEffect(() => {
+  useMemo(() => {
     getProjects();
-  }, [projects]);
+  }, []);
 
   return {
     projects,

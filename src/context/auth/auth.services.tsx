@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react";
-import { SignUpInterface, UserDetails } from "../../interfaces/auth.interface";
+import { SignUpInterface } from "../../interfaces/auth.interface";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import _fetch from "../utils/fetch";
 
 const useAuth = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [user, setUser] = useState<UserDetails | null>(null);
 
     const navigate = useNavigate();
 
     const signUp = async (data: SignUpInterface): Promise<{ token: string }> => {
-        return await fetch(`${API_URL}/auth/signup`, {
+        return await _fetch(`/auth/signup`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
             body: JSON.stringify(data),
         }).then((res) => {
             if (res.status === 201) {
@@ -31,20 +26,23 @@ const useAuth = () => {
     }
 
     const login = async (email: string, password: string): Promise<{ token: string }> => {
-        return await fetch(`${API_URL}/auth/login`, {
+        return await _fetch(`/auth/login`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify({ email, password }),
         }).then(response => {
-            localStorage.setItem('email', email);
-            navigate('/');
-            return response.json();
+            localStorage.setItem('token', response.token);
+            navigate('/docs');
+            return response.token;
         }).catch(error => {
+            console.error(error);
             alert("Usuário ou senha inválidos");
             return error;
         });
+    }
+
+    const logout = () => {
+        localStorage.removeItem('token');
+        navigate('/');
     }
 
     const isTokenExpired = (token: string) => {
@@ -66,20 +64,19 @@ const useAuth = () => {
             if (isTokenExpired(token)) {
                 localStorage.removeItem('token');
                 setIsAuthenticated(false);
-                setUser(null)
             } else {
                 setIsAuthenticated(true);
             }
         } else {
             setIsAuthenticated(false);
         }
-    }, [setIsAuthenticated, user, setUser, navigate]);
+    }, [setIsAuthenticated, navigate]);
 
     return {
         isAuthenticated,
-        user,
         signUp,
-        login
+        login,
+        logout
     }
 }
 

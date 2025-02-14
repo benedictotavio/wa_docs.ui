@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Team } from "../../interfaces/team.interface";
+import _fetch from "../utils/fetch";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -13,9 +14,10 @@ const useTeam = () => {
 
   const getTeams = async () => {
     try {
-      const response = await fetch(`${API_URL}/teams`);
-      const data = await response.json();
-      setTeams(data);
+      const response = await _fetch(`/team?user=${localStorage.getItem("user")}`, {
+        includeCredentials: true,
+      });
+      setTeams(response);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -82,7 +84,7 @@ const useTeam = () => {
 
   useEffect(() => {
     getTeams();
-  }, [teams]);
+  }, []);
 
   return {
     teams,
