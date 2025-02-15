@@ -24,7 +24,7 @@ const _fetch = async (
     if (token) {
       baseHeaders["Authorization"] = `Bearer ${token}`;
     } else {
-      window.location.href = "/login";
+      throw new Error("No token found");
     }
   }
 
@@ -42,7 +42,6 @@ const _fetch = async (
 
           if (error?.message === "Unauthorized") {
             localStorage.removeItem("token");
-            window.location.href = "/login";
           }
         }
 

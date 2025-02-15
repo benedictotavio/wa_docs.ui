@@ -3,17 +3,23 @@ import { useContext, useEffect, useState } from "react";
 import List from "../lists/list";
 import { NavLink } from "react-router-dom";
 import Dropdown from "../../../design/dropdown/dropdown";
-import { UserContext } from "../../../context/users/users.context";
 import { TeamContext } from "../../../context/team/team.context";
 import { AuthContext } from "../../../context/auth/auth.context";
 import TeamPanel from "../../feature/Team";
 import { Team } from "../../../interfaces/team.interface";
+import Modal from "../../../design/modal/Modal";
+import Form from "../../../design/form/form";
+import InputText from "../../../design/inputs/InputText/inputText";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { user } = useContext(UserContext)
-  const { teams } = useContext(TeamContext)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newTeamName, setNewTeamName] = useState("");
+  const [newTeamDescription, setNewTeamDescription] = useState("");
+
+  const { user } = useContext(AuthContext)
+  const { teams, addTeam, changeActualTeam } = useContext(TeamContext)
   const { logout } = useContext(AuthContext)
 
   const handleClick = () => {
@@ -50,6 +56,16 @@ const Navbar: React.FC = () => {
 
   const changeTeam = (team: Team) => {
     setActualTeam(team);
+    changeActualTeam(team);
+  };
+
+  const createNewTeam = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    addTeam({
+      name: newTeamName,
+      description: newTeamDescription,
+      ownerId: user?.id,
+    })
   };
 
   return (
@@ -67,20 +83,42 @@ const Navbar: React.FC = () => {
                     <NavLink to="/me">Minha conta</NavLink>
                   </li>
                   <li>Configurações</li>
-                  <li>Equipes</li>
-                  <li>
-                    <ul className="list-group">
-                      {
-                        teams?.map((team) => (
-                          <li key={team.team_id} className="list-group-item">
-                            <button onClick={() => changeTeam(team)}>
-                              {team.name}
-                            </button>
-                          </li>
-                        ))
-                      }
-                    </ul>
-                  </li>
+                  {
+                    teams.length > 0 ? (
+                      <>
+                        <li>Equipes</li>
+                        <li>
+                          <ul className="list-group">
+                            {
+                              teams?.map((team, index) => (
+                                <li key={
+                                  team.team_id ? team.team_id + index : index
+                                } className="list-group-item">
+                                  <button onClick={() => changeTeam(team)}>
+                                    {team.name}
+                                  </button>
+                                </li>
+                              ))
+                            }
+                          </ul>
+                        </li>
+                      </>
+                    ) : (
+                      <>
+                        <li>
+                          <button onClick={() => setIsModalOpen(!isModalOpen)}>
+                            Criar equipe
+                          </button>
+                        </li>
+                        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                          <Form onSubmit={createNewTeam}>
+                            <InputText value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} placeholder="Nome da equipe" type={"text"} isRequired />
+                            <InputText value={newTeamDescription} onChange={(e) => setNewTeamDescription(e.target.value)} placeholder="Descrição da equipe" type={"text"} isRequired />
+                          </Form>
+                        </Modal>
+                      </>
+                    )
+                  }
                   <li>-------------------</li>
                   <li>
                     <button onClick={logout}>Sair</button>

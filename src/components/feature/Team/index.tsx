@@ -7,10 +7,7 @@ interface TeamProps {
 
 
 const TeamPanel: React.FC<TeamProps> = ({ team }) => {
-
-    console.log("Team", team);
-
-    return team && <Banner title={team.name} description={team.description} />;
+    return <Banner title={team?.name} description={team?.description} />;
 };
 
 export default TeamPanel;

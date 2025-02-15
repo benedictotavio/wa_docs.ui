@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { SignUpInterface } from "../../interfaces/auth.interface";
+import { SignUpInterface, UserDetails } from "../../interfaces/auth.interface";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import _fetch from "../utils/fetch";
 
 const useAuth = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [user, setUser] = useState<UserDetails | null>(null);
 
     const navigate = useNavigate();
 
@@ -16,7 +17,7 @@ const useAuth = () => {
         }).then((res) => {
             if (res.status === 201) {
                 navigate("/");
-                return res.json();
+                return res;
             }
         })
             .catch((err) => {
@@ -25,13 +26,40 @@ const useAuth = () => {
             })
     }
 
+    const getUser = async (email: string): Promise<UserDetails> => {
+        return _fetch(`/user?email=${email}`, {
+            includeCredentials: true,
+        }).then(
+            (res) => {
+                localStorage.setItem("user", JSON.stringify(res.id));
+                setUser(res);
+                return res;
+            }
+        ).catch((err) => {
+            console.error(err);
+        });
+    }
+
+    const getUserByToken = (token: string): string => {
+        if (!token) {
+            location.href = "/";
+            return "";
+        }
+        const decodedToken = jwtDecode<{ sub: string }>(token);
+        return decodedToken.sub;
+    }
+
     const login = async (email: string, password: string): Promise<{ token: string }> => {
         return await _fetch(`/auth/login`, {
             method: 'POST',
             body: JSON.stringify({ email, password }),
-        }).then(response => {
+        }).then(async response => {
             localStorage.setItem('token', response.token);
-            navigate('/docs');
+            const email = getUserByToken(response.token);
+            const userFound = getUser(email);
+            setIsAuthenticated(true);
+            setUser(await userFound);
+            window.location.href = '/docs';
             return response.token;
         }).catch(error => {
             console.error(error);
@@ -41,7 +69,10 @@ const useAuth = () => {
     }
 
     const logout = () => {
-        localStorage.removeItem('token');
+        localStorage.clear();
+        sessionStorage.clear();
+        setIsAuthenticated(false);
+        setUser(null);
         navigate('/');
     }
 
@@ -59,24 +90,32 @@ const useAuth = () => {
     };
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            if (isTokenExpired(token)) {
-                localStorage.removeItem('token');
-                setIsAuthenticated(false);
+        const fetchData = async () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                if (isTokenExpired(token)) {
+                    localStorage.removeItem('token');
+                    setIsAuthenticated(false);
+                    navigate('/');
+                } else {
+                    const email = getUserByToken(token);
+                    const userFound = getUser(email);
+                    setUser(await userFound);
+                    setIsAuthenticated(true);
+                }
             } else {
-                setIsAuthenticated(true);
+                setIsAuthenticated(false);
             }
-        } else {
-            setIsAuthenticated(false);
-        }
+        };
+        fetchData();
     }, [setIsAuthenticated, navigate]);
 
     return {
         isAuthenticated,
         signUp,
         login,
-        logout
+        logout,
+        user
     }
 }
 

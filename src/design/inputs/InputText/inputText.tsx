@@ -7,9 +7,10 @@ interface InputTextProps {
   value?: string;
   className?: string;
   width?: number;
+  isRequired?: boolean;
 }
 
-const InputText = ({ type, placeholder, onChange, value, className, width }: InputTextProps) => {
+const InputText = ({ type, placeholder, onChange, value, className, width, isRequired = false }: InputTextProps) => {
 
   const inputStyles: React.CSSProperties = {
     width: width ? width + "px" : "100%",
@@ -24,6 +25,7 @@ const InputText = ({ type, placeholder, onChange, value, className, width }: Inp
       onChange={onChange}
       className={styles.inputText + " " + className}
       width={width}
+      required={isRequired}
     />
   );
 };

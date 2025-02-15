@@ -3,50 +3,73 @@ import { useNavigate } from "react-router-dom";
 import { Team } from "../../interfaces/team.interface";
 import _fetch from "../utils/fetch";
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 const useTeam = () => {
   const [teams, setTeams] = useState<Team[]>([]);
-  const [team, setTeam] = useState<Team>({} as Team);
+  const [team, setTeam] = useState<Team>(teams[0]);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
   const getTeams = async () => {
     try {
-      const response = await _fetch(`/team?user=${localStorage.getItem("user")}`, {
-        includeCredentials: true,
-      });
+      const response = await _fetch(
+        `/team?user=${localStorage.getItem("user")}`,
+        {
+          includeCredentials: true,
+        }
+      );
+
       setTeams(response);
       setLoading(false);
+
+      if (sessionStorage.getItem("team") === null) {
+        sessionStorage.setItem("team", response[0].id);
+      }
+
+      setTeam(response[0]);
+
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getTeam = async (teamId: number) => {
-    try {
-      const response = await fetch(`${API_URL}/teams/${teamId}`);
-      const data = await response.json();
-      setTeam(data);
-      return data;
-    } catch (error) {
-      console.log(error);
+  const getTeam = async () => {
+
+    const teamId = sessionStorage.getItem("team");
+
+    if (teamId) {
+      try {
+        const response = await _fetch(`/team/${teamId}`, {
+          includeCredentials: true,
+        });
+        const data = await response;
+        sessionStorage.setItem("team", JSON.stringify(data.team_id));
+        setTeam(data);
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
   const addTeam = async (team: Team) => {
     try {
-      const response = await fetch(`${API_URL}/teams`, {
+      await _fetch(`/team`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(team),
+        includeCredentials: true,
       });
-      const data = await response.json();
-      setTeams([...teams, data]);
-      navigate("/");
+      setTeams([
+        ...teams,
+        {
+          ownerId: team.ownerId,
+          name: team.name,
+          description: team.description,
+        },
+      ]);
     } catch (error) {
       console.log(error);
     }
@@ -54,7 +77,7 @@ const useTeam = () => {
 
   const updateTeam = async (team: Team) => {
     try {
-      const response = await fetch(`${API_URL}/teams/${team.team_id}`, {
+      const response = await fetch(`/team/${team.team_id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -73,13 +96,18 @@ const useTeam = () => {
 
   const deleteTeam = async (teamId: number) => {
     try {
-      await fetch(`${API_URL}/teams/${teamId}`, {
+      await fetch(`/team/${teamId}`, {
         method: "DELETE",
       });
       setTeams(teams.filter((team) => team["team_id"] !== teamId));
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const changeActualTeam = async (team: Team) => {
+    sessionStorage.setItem("team", JSON.stringify(team.id));
+    setTeam(team);
   };
 
   useEffect(() => {
@@ -95,6 +123,7 @@ const useTeam = () => {
     addTeam,
     updateTeam,
     deleteTeam,
+    changeActualTeam,
   };
 };
 

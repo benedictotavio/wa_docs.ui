@@ -7,4 +7,5 @@ export interface TeamContextValue {
   addTeam: (team: Team) => void;
   updateTeam: (team: Team) => void;
   deleteTeam: (teamId: number) => void;
+  changeActualTeam: (team: Team) => void;
 }

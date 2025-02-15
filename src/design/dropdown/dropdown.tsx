@@ -6,6 +6,7 @@ interface DropdownProps {
   children: React.ReactNode;
   right?: number;
   left?: number;
+  onClick?: () => void;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -13,11 +14,19 @@ const Dropdown: React.FC<DropdownProps> = ({
   children,
   right,
   left,
+  onClick,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
+  };
+
+  const onClickDropdown = () => {
+    toggleDropdown();
+    if (onClick) {
+      onClick();
+    }
   };
 
   const dropdownStyle: React.CSSProperties = {
@@ -26,7 +35,8 @@ const Dropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <div className={`${styles.dropdown} relative inline-block text-left`}>
+    <div
+      className={`${styles.dropdown} relative inline-block text-left`}>
       <div>
         <button
           type="button"
@@ -34,7 +44,8 @@ const Dropdown: React.FC<DropdownProps> = ({
           id="options-menu"
           aria-haspopup="true"
           aria-expanded="true"
-          onClick={toggleDropdown}
+          onClick={onClickDropdown}
+          onMouseDown={(e) => e.preventDefault()}
         >
           {trigger}
         </button>

@@ -25,16 +25,20 @@ const useProject = () => {
 
   const addProject = async (project: Project) => {
     try {
-      const response = await _fetch(`/projects`, {
+      const response = await _fetch(`/project`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(project),
+        includeCredentials: true,
       });
-      const data = await response.json();
-      setProjects([...projects, data]);
-      navigate("/");
+      const data = await response;
+      setProjects([...projects, {
+        description: data.description,
+        name: data.name,
+        ownerId: data.ownerId,
+      }]);
     } catch (error) {
       console.log(error);
     }

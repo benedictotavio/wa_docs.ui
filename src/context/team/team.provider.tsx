@@ -4,7 +4,7 @@ import { TeamContext } from "./team.context";
 
 export const TeamProvider = ({ children }: { children: ReactNode }) => {
 
-    const { teams, team, loading, addTeam, updateTeam, deleteTeam } = useTeam();
+    const { teams, team, loading, addTeam, updateTeam, deleteTeam, changeActualTeam } = useTeam();
 
     const value = useMemo(() => ({
         teams,
@@ -12,8 +12,9 @@ export const TeamProvider = ({ children }: { children: ReactNode }) => {
         loading,
         addTeam,
         updateTeam,
-        deleteTeam
-    }), [teams, loading, addTeam, updateTeam, deleteTeam, team]);
+        deleteTeam,
+        changeActualTeam
+    }), [teams, loading, addTeam, updateTeam, deleteTeam, team, changeActualTeam]);
 
     return (
         <TeamContext.Provider value={value}>

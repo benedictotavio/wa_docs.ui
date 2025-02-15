@@ -1,12 +1,14 @@
+import { UserDetails } from "./auth.interface";
 import { Folder } from "./folder.interface";
 import { Team } from "./team.interface";
-import { User } from "./user.interface";
 
 export interface Project {
-  id: number;
+  id?: number;
   description: string;
   name: string;
-  owner: User;
-  team: Team;
-  folders: Folder[];
+  owner?: UserDetails;
+  team?: Team;
+  folders?: Folder[];
+  ownerId?: number;
+  teamId?: number;
 }

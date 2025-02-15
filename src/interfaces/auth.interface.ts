@@ -12,7 +12,7 @@ export interface SignUpInterface {
 }
 
 export interface UserDetails {
-  id: string;
+  id: number;
   email: string;
   username: string;
 }

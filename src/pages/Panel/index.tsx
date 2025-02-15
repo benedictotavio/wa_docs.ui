@@ -12,7 +12,7 @@ const Panel = () => {
 
     const renderProjects = () => {
         return projects.map((project) => (
-            <MenuItem key={project.id} text={project.name} folders={project.folders} />
+            <MenuItem projectId={project.id} key={project.id} text={project.name} folders={project.folders} />
         ))
     }
 
@@ -37,7 +37,7 @@ const Panel = () => {
                                     <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1.5a.5.5 0 0 0 1 0V11a.5.5 0 0 0-.5-.5m0 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
                                 </svg>,
                                 title: "Mockservers",
-                                content: <MenuItem text="Get Users" />,
+                                content: <MenuItem text="Get Users"  />,
                             },
                             {
                                 icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-file-earmark-text" viewBox="0 0 16 16">
