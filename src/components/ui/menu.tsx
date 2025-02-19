@@ -59,7 +59,7 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
                     </Modal>
                 </div>
 
-                <ul className="list-group list-group-flush">
+                <ul className="list-group list-group-flush h-100">
                     {children}
                 </ul>
             </menu>

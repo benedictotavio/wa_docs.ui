@@ -7,6 +7,8 @@ interface DropdownProps {
   right?: number;
   left?: number;
   onClick?: () => void;
+  absolute?: boolean;
+  width?: string | number;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -15,6 +17,8 @@ const Dropdown: React.FC<DropdownProps> = ({
   right,
   left,
   onClick,
+  absolute = true,
+  width = "auto",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,15 +36,20 @@ const Dropdown: React.FC<DropdownProps> = ({
   const dropdownStyle: React.CSSProperties = {
     right: right !== undefined ? `${right}px` : undefined,
     left: left !== undefined ? `${left}px` : undefined,
+    width: `${width}%`,
+  };
+
+  const dropdownStyleAbsolute: React.CSSProperties = {
+    ...dropdownStyle,
+    position: absolute ? "absolute" : "relative",
   };
 
   return (
     <div
-      className={`${styles.dropdown} relative inline-block text-left`}>
+      className={styles.dropdown}>
       <div>
-        <button
-          type="button"
-          className={styles.dropdownButton}
+        <div
+          className={styles.dropdownButton} 
           id="options-menu"
           aria-haspopup="true"
           aria-expanded="true"
@@ -48,11 +57,12 @@ const Dropdown: React.FC<DropdownProps> = ({
           onMouseDown={(e) => e.preventDefault()}
         >
           {trigger}
-        </button>
+        </div>
       </div>
       {isOpen && (
         <div
-          className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+          className={`${styles.dropdownMenu}`}
+          style={absolute ? dropdownStyleAbsolute : dropdownStyle}
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="options-menu"

@@ -78,7 +78,7 @@ const Navbar: React.FC = () => {
           <List direction="row" gap={1.5}>
             <li>
               <Dropdown trigger={userProfile()} right={15}>
-                <List direction="column" gap={1}>
+                <List direction="column" gap={1} className="list-group bg-light pl-1 pr-5 py-3">
                   <li>
                     <NavLink to="/me">Minha conta</NavLink>
                   </li>
@@ -119,7 +119,7 @@ const Navbar: React.FC = () => {
                       </>
                     )
                   }
-                  <li>-------------------</li>
+                  <div className="divider"></div>
                   <li>
                     <button onClick={logout}>Sair</button>
                   </li>

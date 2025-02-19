@@ -1,7 +1,7 @@
 import styles from "./inputText.module.css";
 
 interface InputTextProps {
-  type: "text" | "password" | "email" | "number";
+  type: "text" | "password" | "email" | "number" | "tel" | "url";
   placeholder: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
@@ -10,8 +10,15 @@ interface InputTextProps {
   isRequired?: boolean;
 }
 
-const InputText = ({ type, placeholder, onChange, value, className, width, isRequired = false }: InputTextProps) => {
-
+const InputText = ({
+  type,
+  placeholder,
+  onChange,
+  value,
+  className,
+  width,
+  isRequired = false,
+}: InputTextProps) => {
   const inputStyles: React.CSSProperties = {
     width: width ? width + "px" : "100%",
   };

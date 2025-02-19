@@ -14,6 +14,7 @@ type ListProps = {
   twoColumns?: boolean;
   isLoading?: boolean;
   skeleton?: boolean;
+  className?: string;
 };
 
 const List: React.FC<ListProps> = ({
@@ -28,6 +29,7 @@ const List: React.FC<ListProps> = ({
   twoColumns = false,
   isLoading = false,
   skeleton = false,
+  className,
 }) => {
   if (isLoading) {
     return skeleton ? (
@@ -91,7 +93,7 @@ const List: React.FC<ListProps> = ({
   return (
     <ul
       style={stylesList}
-      className={`${styles.list} ${selectable ? styles.list_selectable : ""} ${
+      className={`${styles.list} ${className} ${selectable ? styles.list_selectable : ""} ${
         twoColumns ? styles.list_two_columns : ""
       }`}
     >

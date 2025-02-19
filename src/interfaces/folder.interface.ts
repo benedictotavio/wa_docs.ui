@@ -3,4 +3,5 @@ export interface Folder {
   folderName: string;
   parentFolderId: number | null;
   projectId: number;
+  level: number;
 }
