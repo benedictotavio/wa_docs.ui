@@ -4,7 +4,7 @@ import { Folder } from "../../../interfaces/folder.interface";
 import FolderInputItem from "./inputFolderItem";
 import MoreOptions from "../../ui/moreOptions";
 import Modal from "../../../design/modal/Modal";
-import Request from "../Request";
+import FormRequest from "../Request/form";
 
 interface FolderTreeProps {
   projectId: number;
@@ -86,10 +86,10 @@ const FolderTree: React.FC<FolderTreeProps> = ({ projectId }) => {
             </li>
             <li>
               <button type="button" onClick={() => setIsRequestModalOpen(true)}>
-                <i>+</i> Criar requisição 
+                <i>+</i> Criar requisição
               </button>
               <Modal isOpen={isRequestModalOpen} onClose={() => setIsRequestModalOpen(false)}>
-                <Request />
+                <FormRequest folderId={folder.folderId} />
               </Modal>
             </li>
           </MoreOptions>

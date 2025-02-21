@@ -1,24 +1,42 @@
 import { useState } from "react";
 import ButtonClear from "../button/ButtonClear";
+import Select from "../../../../design/selects/select/Select";
 
 interface InputBodyProps {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  code: string;
 }
 
 // Change to code snippet
-const InputBody: React.FC<InputBodyProps> = ({ value, onChange }) => {
+const InputBody: React.FC<InputBodyProps> = ({ value, onChange, code }) => {
+  const [codeScript, setCodeScript] = useState(code);
 
-  const [code, setCode] = useState<string>(value ?? '');
+  const optionsScript = [
+    { value: "json", label: "JSON" },
+    { value: "xml", label: "XML" },
+    { value: "html", label: "HTML" },
+    { value: "javascript", label: "JavaScript" },
+  ];
 
   return (
     <>
-      <textarea className="form-control w-100" rows={10} value={code} onChange={(e) => onChange && onChange(e.target.value)} />
+      <Select
+        value={codeScript}
+        onChange={(e) => setCodeScript(e.target.value)}
+        options={optionsScript}
+      />
+      <textarea
+        className="form-control w-100"
+        rows={10}
+        value={value}
+        onChange={(e) => onChange(e)}
+      />
       <div className="d-flex justify-content-end">
-        <ButtonClear onClick={() => setCode('')} />
+        <ButtonClear onClick={() => setCodeScript("")} />
       </div>
     </>
-  )
-}
+  );
+};
 
 export default InputBody;

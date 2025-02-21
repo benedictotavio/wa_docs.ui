@@ -52,7 +52,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ projectId, text }) => {
   };
 
   return (
-    <li className="w-100 list-group-item">
+    <li className="w-100 list-group-item mx-0 px-0 mt-2">
       <Dropdown trigger={projectItem(text, handleClick)} absolute={false}>
         <FolderTree projectId={projectId ?? 0} />
       </Dropdown>

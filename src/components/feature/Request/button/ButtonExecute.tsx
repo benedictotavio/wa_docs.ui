@@ -1,10 +1,17 @@
 interface ButtonExecuteProps {
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
 }
 
-const ButtonExecute: React.FC<ButtonExecuteProps> = ({ onClick }) => {
+const ButtonExecute: React.FC<ButtonExecuteProps> = ({
+  onClick,
+  className,
+}) => {
   return (
-    <button className="btn btn-primary m-0 w-25" onClick={onClick}>
+    <button
+      className={`btn btn-primary m-0 w-25 ${className}`}
+      onClick={onClick}
+    >
       Enviar
     </button>
   );

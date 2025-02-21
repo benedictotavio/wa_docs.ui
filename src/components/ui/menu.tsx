@@ -32,7 +32,7 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
     }
 
     return (
-        <aside className="mt-5 p-0 m-0 bg-transparent shadow-sm bg-none">
+        <aside className="mt-5 px-0 mx-0 bg-transparent shadow-sm bg-none">
             <div className="m-3 mb-4">
                 <NavLink to="/" className={"d-flex justify-content-center align-items-center gap-4"}>
                     <i className="m-1" style={{ fontSize: "2rem" }}>
