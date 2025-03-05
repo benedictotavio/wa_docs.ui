@@ -7,6 +7,7 @@ type ModalProps = {
   children: React.ReactNode;
   title?: string;
   height?: number;
+  isCenter?: boolean;
 };
 
 const Modal: React.FC<ModalProps> = ({
@@ -15,9 +16,15 @@ const Modal: React.FC<ModalProps> = ({
   children,
   title,
   height,
+  isCenter,
 }) => {
   const modalStyles: React.CSSProperties = {
     minHeight: height ? `${height}vh` : "auto",
+  };
+
+  const modalBodyStyles: React.CSSProperties = {
+    alignItems: isCenter ? "center" : "flex-start",
+    justifyContent: isCenter ? "center" : "flex-start",
   };
 
   return (
@@ -33,7 +40,9 @@ const Modal: React.FC<ModalProps> = ({
             <Title heading="h2" title={title} fontSize={24} />
           </div>
         )}
-        <div className={styles.modal_body}>{children}</div>
+        <div style={modalBodyStyles} className={styles.modal_body}>
+          {children}
+        </div>
       </div>
     </div>
   );

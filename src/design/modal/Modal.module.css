@@ -39,6 +39,14 @@
   overlay: scroll;
 }
 
+.modal_body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #0c0b0b;
+  width: 100%;
+}
+
 .modal_close_row {
   display: flex;
   justify-content: flex-end;

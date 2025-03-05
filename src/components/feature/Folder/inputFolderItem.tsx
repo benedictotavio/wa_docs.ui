@@ -14,6 +14,7 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
   folder,
   marginStart = 0,
 }) => {
+  const [isInputOpen, setIsInputOpen] = useState(false);
   const [isFolderIconOpen, setIsFolderIconOpen] = useState(false);
   const [newFolderName, setNewFolderName] = useState(folder.folderName);
   const [requests, setRequests] = useState<Request[]>([]);
@@ -31,7 +32,7 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
       newFolderName !== "" &&
       newFolderName.trim().length > 3
     ) {
-      updateFolder(folder.folderId, newFolderName);
+      updateFolder(folder.folderId, newFolderName)
     }
   };
 
@@ -48,9 +49,9 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
   return (
     <div
       style={FolderInputStyle}
-      className="d-flex flex-column align-items-center gap-2"
+      className="d-flex flex-column align-items-center gap-2 my-2"
     >
-      <div className="d-flex flow-row align-items-center justify-content-between">
+      <div className="d-flex flow-row align-items-center justify-content-between w-100">
         <button onClick={getRequestsByFolderId} className="bg-transparent border-0">
           {isFolderIconOpen ? (
             <i className="mx-2">&#128194;</i>
@@ -58,13 +59,38 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
             <i className="mx-2">&#128193;</i>
           )}
         </button>
-        <input
-          className="w-100 bg-transparent border-0 my-2"
-          onBlur={changeFolderName}
-          type="text"
-          value={newFolderName}
-          onChange={(e) => setNewFolderName(e.target.value)}
-        />
+        {
+          isInputOpen ? (
+            <input
+              type="text"
+              value={newFolderName}
+              onChange={(e) => setNewFolderName(e.target.value)}
+              onBlur={() => {
+                changeFolderName();
+                setIsInputOpen(false);
+              }}
+              className="w-100"
+              autoFocus
+              onClick={() => {
+                setIsFolderIconOpen(!isFolderIconOpen);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  changeFolderName();
+                  setIsInputOpen(false);
+                }
+              }}
+              onDoubleClick={(e) => {
+                e.stopPropagation();
+                setIsInputOpen(false);
+              }}
+            />
+          ) : (
+            <button onClick={() => setIsInputOpen(true)} className="bg-transparent border-0 w-100">
+              {folder.folderName}
+            </button>
+          )
+        }
       </div>
       {
         isFolderIconOpen && (

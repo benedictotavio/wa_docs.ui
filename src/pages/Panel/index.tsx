@@ -1,19 +1,15 @@
 import { useContext } from "react";
+import MockServerList from "../../components/feature/Mockserver/list/mockserverList";
 import RequestPanel from "../../components/feature/Request/panel";
 import Menu from "../../components/ui/menu";
 import MenuItem from "../../components/ui/menuItem";
 import Navbar from "../../components/ui/navbar";
-import Tabs from "../../design/tabs";
-import { ProjectContext } from "../../context/project/project.context";
+import Tabs from "../../design/tabs/Tabs";
+import { RequestContext } from "../../context/request/request.context";
+import { RequestMethod } from "../../interfaces/request.interface";
 
 const Panel: React.FC = () => {
-  const { projects } = useContext(ProjectContext);
-
-  const renderProjects = () => {
-    return projects.map((project) => (
-      <MenuItem projectId={project.id} key={project.id} text={project.name} />
-    ));
-  };
+  const { currentRequest } = useContext(RequestContext);
 
   return (
     <div className="row m-0 p-0">
@@ -40,7 +36,7 @@ const Panel: React.FC = () => {
                   </svg>
                 ),
                 title: "Requisições",
-                content: renderProjects(),
+                content: <MenuItem />,
               },
               {
                 icon: (
@@ -57,7 +53,11 @@ const Panel: React.FC = () => {
                   </svg>
                 ),
                 title: "Mockservers",
-                content: <MenuItem text="Get Users" />,
+                content: (
+                  <MenuItem>
+                    <MockServerList />
+                  </MenuItem>
+                ),
               },
               {
                 icon: (
@@ -74,7 +74,12 @@ const Panel: React.FC = () => {
                   </svg>
                 ),
                 title: "Documentação",
-                content: <MenuItem text="Documentação" />,
+                content: (
+                  <>
+                    <h2>Documentação</h2>
+                    <p>Teste</p>
+                  </>
+                ),
               },
             ]}
           />
@@ -82,7 +87,17 @@ const Panel: React.FC = () => {
       </div>
       <div className="col-md-8 col-lg-9 pr-0 m-0">
         <Navbar />
-        <RequestPanel />
+        <RequestPanel
+          currentRequest={
+            currentRequest ?? {
+              uri: "",
+              body: "",
+              headers: "",
+              method: RequestMethod.GET,
+              name: "",
+            }
+          }
+        />
       </div>
     </div>
   );

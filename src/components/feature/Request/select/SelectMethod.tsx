@@ -2,7 +2,7 @@ import { useState } from "react";
 import Select from "../../../../design/selects/select/Select";
 import { RequestMethod } from "../../../../interfaces/request.interface";
 
-export interface SelectMethodProps {
+interface SelectMethodProps {
   value: RequestMethod;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   className?: string;
@@ -13,8 +13,6 @@ const SelectMethod: React.FC<SelectMethodProps> = ({
   onChange,
   className,
 }) => {
-
-  console.log("value", value);
 
   const [selectedValue, setSelectedValue] = useState(value);
   const options: { value: RequestMethod; label: string }[] = [

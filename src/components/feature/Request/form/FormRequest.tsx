@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
-import Tabs from "../../../../design/tabs";
+import Tabs from "../../../../design/tabs/Tabs";
 import InputUri from "../input/InputUri";
 import SelectMethod from "../select/SelectMethod";
 import TableHeaders from "../tables/TableHeaders";
 import { RequestContext } from "../../../../context/request/request.context";
 import { RequestMethod } from "../../../../interfaces/request.interface";
-import Form from "../../../../design/form/form";
+import Form from "../../../../design/form/Form";
 import InputText from "../../../../design/inputs/InputText/inputText";
 import InputBody from "../input/InputBody";
 
@@ -57,7 +57,10 @@ const FormRequest: React.FC<RequestFormProps> = ({ folderId }) => {
   };
 
   return (
-    <Form onSubmit={createRequest}>
+    <Form
+      onSubmit={createRequest}
+      buttonDisabled={!requestName || !uri || !method}
+    >
       <InputText
         value={requestName}
         onChange={(event) => setRequestName(event.target.value)}

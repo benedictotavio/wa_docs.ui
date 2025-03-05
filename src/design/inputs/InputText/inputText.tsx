@@ -8,6 +8,7 @@ interface InputTextProps {
   className?: string;
   width?: number;
   isRequired?: boolean;
+  isReadOnly?: boolean;
 }
 
 const InputText = ({
@@ -18,6 +19,7 @@ const InputText = ({
   className,
   width,
   isRequired = false,
+  isReadOnly = false,
 }: InputTextProps) => {
   const inputStyles: React.CSSProperties = {
     width: width ? width + "px" : "100%",
@@ -33,6 +35,7 @@ const InputText = ({
       className={styles.inputText + " " + className}
       width={width}
       required={isRequired}
+      readOnly={isReadOnly}
     />
   );
 };

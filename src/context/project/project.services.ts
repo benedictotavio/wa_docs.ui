@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import _fetch from "../utils/fetch";
 
 const useProject = () => {
+  const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -12,20 +13,29 @@ const useProject = () => {
   const getProjects = async () => {
     setLoading(true);
     try {
-      const response = await _fetch(`/project?owner=${localStorage.getItem("user")}`, {
-        includeCredentials: true,
-      });
+      const response = await _fetch(
+        `/project?owner=${localStorage.getItem("user")}`,
+        {
+          includeCredentials: true,
+        }
+      );
+
       setProjects(response);
+
+      if (response.length > 0) {
+        if (!currentProject) {
+          setCurrentProject(response[0]);
+        }
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
   };
-
   const addProject = async (project: Project) => {
     try {
-      const response = await _fetch(`/project`, {
+      const data = await _fetch(`/project`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,20 +43,24 @@ const useProject = () => {
         body: JSON.stringify(project),
         includeCredentials: true,
       });
-      const data = await response;
-      setProjects([...projects, {
-        description: data.description,
-        name: data.name,
-        ownerId: data.ownerId,
-      }]);
+
+      setProjects([
+        ...projects,
+        {
+          description: data.description,
+          name: data.name,
+          ownerId: data.ownerId,
+        },
+      ]);
+      setCurrentProject(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const updateProject = async (project: Project) => {
     try {
-      const response = await _fetch(`/projects/${project.id}`, {
+      const response = await _fetch(`/project/${project.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -59,19 +73,28 @@ const useProject = () => {
       );
       navigate("/");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const deleteProject = async (projectId: number) => {
     try {
-      await _fetch(`/projects/${projectId}`, {
+      await _fetch(`/project/${projectId}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        includeCredentials: true,
       });
       setProjects(projects.filter((project) => project.id !== projectId));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
+  };
+
+  const changeCurrentProject = (projectId: number) => {
+    const project = projects.find((project) => project.id === projectId);
+    setCurrentProject(project || null);
   };
 
   useMemo(() => {
@@ -85,6 +108,8 @@ const useProject = () => {
     addProject,
     updateProject,
     deleteProject,
+    currentProject,
+    changeCurrentProject,
   };
 };
 

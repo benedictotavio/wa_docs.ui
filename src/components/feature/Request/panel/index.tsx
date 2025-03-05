@@ -1,36 +1,36 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import BoxResponse from "../box/BoxResponse";
 import ButtonExecute from "../button/ButtonExecute";
 import InputUri from "../input/InputUri";
 import SelectMethod from "../select/SelectMethod";
 import TableHeaders from "../tables/TableHeaders";
 import InputBody from "../input/InputBody";
-import Tabs from "../../../../design/tabs";
+import Tabs from "../../../../design/tabs/Tabs";
 import {
+  Request,
   RequestMethod,
 } from "../../../../interfaces/request.interface";
 import { RequestService } from "../../../../services/request.service";
-import { RequestContext } from "../../../../context/request/request.context";
 
-const RequestPanel: React.FC = () => {
+interface RequestPanelProps {
+  currentRequest: Request;
+}
+
+const RequestPanel: React.FC<RequestPanelProps> = ({ currentRequest }) => {
   const requestService = new RequestService();
 
-  const { currentRequest } = useContext(RequestContext);
-
-  console.log("currentRequest  ====> Panel ===> ", currentRequest);
+  console.log("currentRequest", currentRequest);
 
   const [response, setResponse] = useState<string>("");
   const [newHeaderKey, setNewHeaderKey] = useState("");
   const [newHeaderValue, setNewHeaderValue] = useState("");
 
-  const [headers, setHeaders] = useState<{ key: string; value: string }[]>(
-    JSON.parse(currentRequest.headers)
+  const [headers, setHeaders] = useState<{ key: string; value: string }[]>([]);
+  const [body, setBody] = useState<string>(currentRequest?.body ?? "");
+  const [uri, setUri] = useState<string>(currentRequest?.uri ?? "");
+  const [method, setMethod] = useState<RequestMethod>(
+    currentRequest?.method ?? RequestMethod.GET
   );
-  const [body, setBody] = useState<string>(currentRequest.body);
-  const [uri, setUri] = useState<string>(currentRequest.uri);
-  const [method, setMethod] = useState<RequestMethod>(currentRequest.method);
-
-  console.log("Method", method);
 
   const addRow = () => {
     setHeaders([...headers, { key: newHeaderKey, value: newHeaderValue }]);
@@ -45,10 +45,13 @@ const RequestPanel: React.FC = () => {
       uri,
       headers: JSON.stringify(headers),
       body,
-      name: currentRequest.name,
-      id: currentRequest.id,
-      folderId: currentRequest.folderId,
     });
+
+    if (response.error) {
+      setResponse(JSON.stringify(response.error));
+      return;
+    }
+
     setResponse(JSON.stringify(response));
   };
 
@@ -111,5 +114,4 @@ const RequestPanel: React.FC = () => {
     </div>
   );
 };
-
 export default RequestPanel;

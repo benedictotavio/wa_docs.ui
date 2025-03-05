@@ -1,4 +1,4 @@
-import Dropdown from "../../../design/dropdown/dropdown";
+import Dropdown from "../../../design/dropdown/Dropdown";
 import List from "../lists/list";
 
 interface MoreOptionsProps {

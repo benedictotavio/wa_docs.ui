@@ -1,18 +1,10 @@
-import { useEffect, useState } from "react";
-import { Request, RequestMethod } from "../../interfaces/request.interface";
+import { useMemo, useState } from "react";
+import { Request } from "../../interfaces/request.interface";
 import _fetch from "../utils/fetch";
 
 const useRequest = () => {
   const [loading, setLoading] = useState(true);
-  const [currentRequest, setCurrentRequest] = useState<Request>({
-    id: 0,
-    name: "",
-    uri: "",
-    method: RequestMethod.GET,
-    headers: "[]",
-    body: "{}",
-    folderId: 0,
-  });
+  const [currentRequest, setCurrentRequest] = useState<Request | null>(null);
 
   const addRequest = async (request: Request) => {
     try {
@@ -27,7 +19,7 @@ const useRequest = () => {
         localStorage.setItem("request", JSON.stringify(response.id));
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -42,7 +34,7 @@ const useRequest = () => {
         includeCredentials: true,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -53,7 +45,7 @@ const useRequest = () => {
         includeCredentials: true,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -64,9 +56,14 @@ const useRequest = () => {
         includeCredentials: true,
       });
       const data = await response;
+      if (!currentRequest) {
+        setCurrentRequest(data[0]);
+        localStorage.setItem("request", JSON.stringify(data[0].id));
+      }
+
       return data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -82,7 +79,7 @@ const useRequest = () => {
       localStorage.setItem("request", JSON.stringify(data.id));
       return data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -96,27 +93,17 @@ const useRequest = () => {
       setCurrentRequest(request);
       localStorage.setItem("request", JSON.stringify(request.id));
     }
-
-    console.log("currentRequest", currentRequest);
   };
 
-  useEffect(() => {
-    const loadRequest = async () => {
-      setLoading(true);
-      const requestId = localStorage.getItem("request");
-  
-      console.log("requestId", requestId);
-  
-      if (requestId) {
-        const req = await getRequestById(parseInt(requestId));
-        console.log("req", req);
-        setCurrentRequest(req);
-      }
-  
-      setLoading(false);
-    };
-  
-    loadRequest();
+  useMemo(async () => {
+    setLoading(true);
+    if (currentRequest) return;
+    const requestId = localStorage.getItem("request");
+    if (!requestId) return;
+    await getRequestById(parseInt(requestId)).then((request) => {
+      setCurrentRequest(request);
+    });
+    setLoading(false);
   }, []);
 
   return {

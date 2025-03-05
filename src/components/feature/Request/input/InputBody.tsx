@@ -6,10 +6,18 @@ interface InputBodyProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   code: string;
+  isRequired?: boolean;
+  isDisabled?: boolean;
 }
 
 // Change to code snippet
-const InputBody: React.FC<InputBodyProps> = ({ value, onChange, code }) => {
+const InputBody: React.FC<InputBodyProps> = ({
+  value,
+  onChange,
+  code,
+  isRequired,
+  isDisabled,
+}) => {
   const [codeScript, setCodeScript] = useState(code);
 
   const optionsScript = [
@@ -31,6 +39,8 @@ const InputBody: React.FC<InputBodyProps> = ({ value, onChange, code }) => {
         rows={10}
         value={value}
         onChange={(e) => onChange(e)}
+        required={isRequired}
+        disabled={isDisabled}
       />
       <div className="d-flex justify-content-end">
         <ButtonClear onClick={() => setCodeScript("")} />

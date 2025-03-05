@@ -37,6 +37,9 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
     ]
   );
 
+  console.log("RequestProvider value", value);
+  
+
   return (
     <RequestContext.Provider value={value}>{children}</RequestContext.Provider>
   );

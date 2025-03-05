@@ -1,7 +1,7 @@
 import { Request } from "../../interfaces/request.interface";
 
 export interface RequestContextValue {
-  currentRequest: Request;
+  currentRequest: Request | null;
   changeCurrentRequest: (request: Request | number) => void;
   loading: boolean;
   addRequest: (request: Request) => void;

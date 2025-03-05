@@ -1,6 +1,6 @@
 import Button from "../button/button";
 import Skeleton from "../loading/Skeleton";
-import styles from "./form.module.css";
+import styles from "./Form.module.css";
 
 type FormProps = {
   children?: React.ReactNode;
@@ -9,6 +9,7 @@ type FormProps = {
   buttonDisabled?: boolean;
   isLoading?: boolean;
   skeleton?: boolean;
+  width?: number;
 };
 
 const Form: React.FC<FormProps> = ({
@@ -18,6 +19,7 @@ const Form: React.FC<FormProps> = ({
   buttonDisabled = false,
   isLoading = false,
   skeleton = false,
+  width
 }) => {
   if (isLoading && skeleton) {
     return (
@@ -35,14 +37,14 @@ const Form: React.FC<FormProps> = ({
     );
   }
 
+  const formStyles: React.CSSProperties = {
+    width: width && `${width}%`,
+  };
+
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
+    <form className={styles.form} onSubmit={onSubmit} style={formStyles}>
       {children}
-      {buttonDisabled ? (
-        <Button className={styles.button}>
-          {buttonText}
-        </Button>
-      ) : (
+      {!buttonDisabled && (
         <Button className={styles.button} type="submit">
           {buttonText}
         </Button>

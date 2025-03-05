@@ -11,10 +11,10 @@ export enum RequestMethod {
 
 export interface Request {
   id?: number;
-  name: string;
+  name?: string;
   uri: string;
   body: string;
   method: RequestMethod;
   headers: string;
-  folderId: number;
+  folderId?: number;
 }

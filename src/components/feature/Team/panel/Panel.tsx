@@ -1,5 +1,5 @@
-import { Team } from "../../../interfaces/team.interface";
-import Banner from "./banner/Banner";
+import { Team } from "../../../../interfaces/team.interface";
+import Banner from "../banner/Banner";
 
 interface TeamProps {
     team: Team;

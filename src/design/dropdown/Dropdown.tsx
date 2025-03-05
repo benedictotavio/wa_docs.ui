@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./dropdown.module.css";
+import styles from "./Dropdown.module.css";
 
 interface DropdownProps {
   trigger: React.ReactNode;
@@ -46,9 +46,12 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   return (
     <div
-      className={styles.dropdown}>
+      className={styles.dropdown}
+      >
       <div>
         <div
+          role="button"
+          tabIndex={0}
           className={styles.dropdownButton} 
           id="options-menu"
           aria-haspopup="true"

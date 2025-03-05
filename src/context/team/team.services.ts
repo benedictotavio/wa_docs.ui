@@ -29,7 +29,7 @@ const useTeam = () => {
       setTeam(response[0]);
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -47,7 +47,7 @@ const useTeam = () => {
         setTeam(data);
         return data;
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   };
@@ -61,7 +61,12 @@ const useTeam = () => {
         },
         body: JSON.stringify(team),
         includeCredentials: true,
+      }).then((response) => {
+        if (sessionStorage.getItem("team") === null) {
+          sessionStorage.setItem("team", response.teamId);
+        }
       });
+
       setTeams([
         ...teams,
         {
@@ -70,8 +75,9 @@ const useTeam = () => {
           description: team.description,
         },
       ]);
+
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -90,7 +96,7 @@ const useTeam = () => {
       );
       navigate("/");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -101,7 +107,7 @@ const useTeam = () => {
       });
       setTeams(teams.filter((team) => team["team_id"] !== teamId));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
