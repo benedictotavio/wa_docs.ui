@@ -45,23 +45,20 @@ const Dropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <div
-      className={styles.dropdown}
+    <div className={styles.dropdown}>
+      <div
+        role="button"
+        tabIndex={0}
+        className={styles.dropdownButton}
+        id="options-menu"
+        aria-haspopup="true"
+        aria-expanded="true"
+        onClick={onClickDropdown}
+        onMouseDown={(e) => e.preventDefault()}
       >
-      <div>
-        <div
-          role="button"
-          tabIndex={0}
-          className={styles.dropdownButton} 
-          id="options-menu"
-          aria-haspopup="true"
-          aria-expanded="true"
-          onClick={onClickDropdown}
-          onMouseDown={(e) => e.preventDefault()}
-        >
-          {trigger}
-        </div>
+        {trigger}
       </div>
+
       {isOpen && (
         <div
           className={`${styles.dropdownMenu}`}

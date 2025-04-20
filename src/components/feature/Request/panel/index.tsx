@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import BoxResponse from "../box/BoxResponse";
 import ButtonExecute from "../button/ButtonExecute";
 import InputUri from "../input/InputUri";
@@ -6,20 +6,13 @@ import SelectMethod from "../select/SelectMethod";
 import TableHeaders from "../tables/TableHeaders";
 import InputBody from "../input/InputBody";
 import Tabs from "../../../../design/tabs/Tabs";
-import {
-  Request,
-  RequestMethod,
-} from "../../../../interfaces/request.interface";
+import { RequestMethod } from "../../../../interfaces/request.interface";
 import { RequestService } from "../../../../services/request.service";
+import { RequestContext } from "../../../../context/request/request.context";
 
-interface RequestPanelProps {
-  currentRequest: Request;
-}
-
-const RequestPanel: React.FC<RequestPanelProps> = ({ currentRequest }) => {
+const RequestPanel: React.FC = () => {
   const requestService = new RequestService();
-
-  console.log("currentRequest", currentRequest);
+  const { currentRequest } = useContext(RequestContext);
 
   const [response, setResponse] = useState<string>("");
   const [newHeaderKey, setNewHeaderKey] = useState("");
@@ -41,16 +34,18 @@ const RequestPanel: React.FC<RequestPanelProps> = ({ currentRequest }) => {
   const executeRequest = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const response = await requestService.exeute({
-      method,
-      uri,
+      method: currentRequest?.method ?? RequestMethod.GET,
+      uri: currentRequest?.uri ?? "",
       headers: JSON.stringify(headers),
-      body,
+      body: currentRequest?.body ?? "",
     });
 
     if (response.error) {
       setResponse(JSON.stringify(response.error));
       return;
     }
+
+    console.log("response", response);
 
     setResponse(JSON.stringify(response));
   };
@@ -60,12 +55,22 @@ const RequestPanel: React.FC<RequestPanelProps> = ({ currentRequest }) => {
       <div className="d-flex flex-row justify-content-center my-3 w-100 container-fluid">
         <div className="w-100 h-100 d-flex flex-row justify-content-center">
           <SelectMethod
-            value={method}
-            onChange={(event) => setMethod(event.target.value as RequestMethod)}
+            value={currentRequest?.method ?? method}
+            onChange={(event) => {
+              setMethod(event.target.value as RequestMethod);
+              if (currentRequest) {
+                currentRequest.method = event.target.value as RequestMethod;
+              }
+            }}
           />
           <InputUri
-            value={uri}
-            onChange={(event) => setUri(event.target.value)}
+            value={currentRequest?.uri ?? uri}
+            onChange={(event) => {
+              setUri(event.target.value);
+              if (currentRequest) {
+                currentRequest.uri = event.target.value;
+              }
+            }}
           />
           <ButtonExecute onClick={executeRequest} />
         </div>

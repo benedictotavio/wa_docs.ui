@@ -96,6 +96,8 @@ const useRequest = () => {
   };
 
   useMemo(async () => {
+    console.log("Current Request", currentRequest);
+    
     setLoading(true);
     if (currentRequest) return;
     const requestId = localStorage.getItem("request");
@@ -104,7 +106,7 @@ const useRequest = () => {
       setCurrentRequest(request);
     });
     setLoading(false);
-  }, []);
+  }, [currentRequest]);
 
   return {
     currentRequest,

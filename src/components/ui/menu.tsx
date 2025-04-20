@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
 import Modal from "../../design/modal/Modal";
 import Form from "../../design/form/Form";
 import InputText from "../../design/inputs/InputText/inputText";
@@ -11,6 +10,8 @@ import List from "./lists/list";
 import { FolderContext } from "../../context/folder/folder.context";
 import HtmlIcon from "../../design/icon/htmlIcon/HtmlIcon";
 import Button from "../../design/button/button";
+// import Logo from "./logo";
+// import LogoImage from "../../assets/logo.png"
 
 interface MenuProps {
   children?: React.ReactNode;
@@ -83,17 +84,16 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
 
   return (
     <aside className="mt-5 px-0 mx-0 bg-transparent shadow-sm bg-none">
-      <div className="m-3 mb-4">
-        <NavLink
-          to="/"
-          className={"d-flex justify-content-center align-items-center gap-4"}
-        >
-          <i className="m-1" style={{ fontSize: "2rem" }}>
-            &#x1FA90;
-          </i>
-          <h3>Wa DOCS</h3>
-        </NavLink>
-      </div>
+      {/* <Logo
+        imageSmall={LogoImage}
+        imageMedium={LogoImage}
+        imageLarge={LogoImage}
+        imageAlt="WA Docs Logo"
+      /> */}
+
+      <span>
+        WA Docs
+      </span>
 
       <menu className="d-flex flex-column">
         <div className="d-flex flex-row">
@@ -129,44 +129,49 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
           </Modal>
         </div>
 
-        <div>
-          <Dropdown
-            width={90}
-            onClick={() => setIsArrowIcon(!isArrowIcon)}
-            trigger={
-              <Button className="mt-3">
-                <HtmlIcon unicode="&#8964;" size={32} />
-                <span>{currentProject?.name ?? "Selecione um projeto"}</span>
-              </Button>
-            }
+        <Dropdown
+          width={90}
+          onClick={() => setIsArrowIcon(!isArrowIcon)}
+          trigger={
+            <Button className="mt-3">
+              <HtmlIcon unicode="&#8964;" size={28} />
+              <span>{currentProject?.name ?? "Selecione um projeto"}</span>
+            </Button>
+          }
+        >
+          <List
+            direction="column"
+            className="text-center bg-white rounded-3 border"
+            gap={1.5}
           >
-            <List
-              direction="column"
-              className="text-center bg-white rounded-3 border"
-            >
-              {projects.map((project) => (
-                <li key={project.id} className="mx-1 my-2">
-                  <button
-                    onClick={() => changeProject(project.id!)}
-                    className="btn btn-outline-primary"
-                  >
-                    {project.name}
-                  </button>
-                </li>
-              ))}
-              <li className="d-flex justify-content-center">
-                <button onClick={handleClickCreateFolder}>Criar pasta</button>
+            {projects.map((project) => (
+              <li key={project.id} className="mx-1 my-2">
                 <button
-                  className="badge bg-danger"
-                  onClick={handleClickDeleteProject}
+                  onClick={() => changeProject(project.id!)}
+                  className="btn btn-outline-primary"
                 >
-                  <HtmlIcon unicode="&#x1F5D1;" />
-                  <span>Deletar Projeto</span>
+                  {project.name}
                 </button>
               </li>
-            </List>
-          </Dropdown>
-        </div>
+            ))}
+            <li className="d-flex justify-content-center">
+              <button onClick={handleClickCreateFolder}>Criar pasta</button>
+              <button
+                className="badge bg-danger"
+                onClick={handleClickDeleteProject}
+              >
+                <HtmlIcon unicode="&#x1F5D1;" />
+                <span>Deletar Projeto</span>
+              </button>
+            </li>
+          </List>
+          <button
+            className="w-100 rounded-bottom"
+            onClick={() => setOpenModal(true)}
+          >
+            Criar projeto
+          </button>
+        </Dropdown>
 
         <ul className="list-group list-group-flush h-100">{children}</ul>
       </menu>

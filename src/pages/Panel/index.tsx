@@ -1,16 +1,11 @@
-import { useContext } from "react";
 import MockServerList from "../../components/feature/Mockserver/list/mockserverList";
 import RequestPanel from "../../components/feature/Request/panel";
 import Menu from "../../components/ui/menu";
 import MenuItem from "../../components/ui/menuItem";
 import Navbar from "../../components/ui/navbar";
 import Tabs from "../../design/tabs/Tabs";
-import { RequestContext } from "../../context/request/request.context";
-import { RequestMethod } from "../../interfaces/request.interface";
 
 const Panel: React.FC = () => {
-  const { currentRequest } = useContext(RequestContext);
-
   return (
     <div className="row m-0 p-0">
       <div className="col-md-4 col-lg-3 pl-0 m-0">
@@ -87,17 +82,7 @@ const Panel: React.FC = () => {
       </div>
       <div className="col-md-8 col-lg-9 pr-0 m-0">
         <Navbar />
-        <RequestPanel
-          currentRequest={
-            currentRequest ?? {
-              uri: "",
-              body: "",
-              headers: "",
-              method: RequestMethod.GET,
-              name: "",
-            }
-          }
-        />
+        <RequestPanel />
       </div>
     </div>
   );

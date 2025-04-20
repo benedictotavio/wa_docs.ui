@@ -2,6 +2,7 @@ import { Request, RequestMethod } from "../interfaces/request.interface";
 
 export class RequestService {
   public async exeute(request: Request) {
+    console.log("Request", request);
     return this.switchMethod(request)
       .then((response) => response.json())
       .catch((error) => {

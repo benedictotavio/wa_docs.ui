@@ -13,18 +13,29 @@ const useProject = () => {
   const getProjects = async () => {
     setLoading(true);
     try {
-      const response = await _fetch(
-        `/project?owner=${localStorage.getItem("user")}`,
-        {
-          includeCredentials: true,
-        }
-      );
+      const userId = localStorage.getItem("user");
+      if (!userId) return;
+
+      const response = await _fetch(`/project?owner=${userId}`, {
+        includeCredentials: true,
+      });
 
       setProjects(response);
 
       if (response.length > 0) {
         if (!currentProject) {
-          setCurrentProject(response[0]);
+          if (sessionStorage.getItem("project")) {
+            const projectId = sessionStorage.getItem("project") ?? "";
+            setCurrentProject(
+              response.find(
+                (project: Project) => project.id === Number(projectId)
+              )
+            );
+            sessionStorage.setItem("project", projectId);
+          } else {
+            setCurrentProject(response[0]);
+            sessionStorage.setItem("project", response[0].id);
+          }
         }
       }
     } catch (error) {
@@ -94,6 +105,7 @@ const useProject = () => {
 
   const changeCurrentProject = (projectId: number) => {
     const project = projects.find((project) => project.id === projectId);
+    sessionStorage.setItem("project", JSON.stringify(projectId));
     setCurrentProject(project || null);
   };
 

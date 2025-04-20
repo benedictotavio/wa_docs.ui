@@ -2,7 +2,7 @@ interface LogoProps {
   imageSmall: string;
   imageMedium: string;
   imageLarge: string;
-  imageAlt?: string;
+  imageAlt: string;
   className?: string;
   onClick?: () => void;
 }
@@ -43,9 +43,8 @@ const Logo = ({
           srcSet={`${imageLarge} 1024w`}
           sizes="1024px"
         />
-        <img src={imageLarge} alt={imageAlt || "Paid Logo"} />
+        <img src={imageLarge} alt={imageAlt} />
       </picture>
     </button>
   );
-};
-export default Logo;
+};export default Logo;
