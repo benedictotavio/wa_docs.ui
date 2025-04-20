@@ -8,9 +8,7 @@ interface MoreOptionsProps {
 const MoreOptions: React.FC<MoreOptionsProps> = ({ children }) => {
   return (
     <Dropdown trigger={<i>&#x22EF;</i>}>
-      <List direction="column">
-        {children}
-      </List>
+      <List direction="column">{children}</List>
     </Dropdown>
   );
 };

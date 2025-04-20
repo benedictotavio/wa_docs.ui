@@ -10,8 +10,10 @@ import List from "./lists/list";
 import { FolderContext } from "../../context/folder/folder.context";
 import HtmlIcon from "../../design/icon/htmlIcon/HtmlIcon";
 import Button from "../../design/button/button";
-// import Logo from "./logo";
-// import LogoImage from "../../assets/logo.png"
+import image_logo_200 from "../../assets/logo_200w.png";
+import image_logo_100 from "../../assets/logo_100w.png";
+import image_logo_50 from "../../assets/logo_50w.png";
+import Logo from "./logo";
 
 interface MenuProps {
   children?: React.ReactNode;
@@ -84,16 +86,14 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
 
   return (
     <aside className="mt-5 px-0 mx-0 bg-transparent shadow-sm bg-none">
-      {/* <Logo
-        imageSmall={LogoImage}
-        imageMedium={LogoImage}
-        imageLarge={LogoImage}
-        imageAlt="WA Docs Logo"
-      /> */}
-
-      <span>
-        WA Docs
-      </span>
+      <div className="d-flex flex-column align-items-center">
+        <Logo
+          imageSmall={image_logo_200}
+          imageMedium={image_logo_100}
+          imageLarge={image_logo_50}
+          imageAlt="WA Docs Logo"
+        />
+      </div>
 
       <menu className="d-flex flex-column">
         <div className="d-flex flex-row">

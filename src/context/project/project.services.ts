@@ -44,6 +44,7 @@ const useProject = () => {
       setLoading(false);
     }
   };
+
   const addProject = async (project: Project) => {
     try {
       const data = await _fetch(`/project`, {
