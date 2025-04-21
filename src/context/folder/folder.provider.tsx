@@ -3,17 +3,16 @@ import useFolder from "./folder.services";
 import { FolderContext } from "./folder.context";
 
 export const FolderProvider = ({ children }: { children: ReactNode }) => {
-  const { createSubFolder, getTree, createFolder, updateFolder, deleteFolder } = useFolder();
+  const { getTree, createFolder, updateFolder, deleteFolder } = useFolder();
 
   const value = useMemo(
     () => ({
-      createSubFolder,
       getTree,
       createFolder,
       updateFolder,
-      deleteFolder
+      deleteFolder,
     }),
-    [createSubFolder, getTree, createFolder, updateFolder, deleteFolder]
+    [getTree, createFolder, updateFolder, deleteFolder]
   );
 
   return (

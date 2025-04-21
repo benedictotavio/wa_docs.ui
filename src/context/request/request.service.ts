@@ -60,7 +60,6 @@ const useRequest = () => {
         setCurrentRequest(data[0]);
         localStorage.setItem("request", JSON.stringify(data[0].id));
       }
-
       return data;
     } catch (error) {
       console.error(error);

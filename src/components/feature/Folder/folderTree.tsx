@@ -35,6 +35,7 @@ const FolderTree: React.FC<FolderTreeProps> = ({ projectId }) => {
 
   return (
     <div>
+<<<<<<< HEAD
       {folders.length > 0 ? (
         <div>
           {reduceFolders(folders).map((folder) => (
@@ -63,6 +64,15 @@ const FolderTree: React.FC<FolderTreeProps> = ({ projectId }) => {
           </Modal>
         </>
       )}
+=======
+      {folders.map((folder: Folder) => (
+        <FolderInputItem
+          folder={folder}
+          marginStart={folder.level * 10.5}
+          key={folder.folderId}
+        />
+      ))}
+>>>>>>> c7317b5 (feat: add level in model folder)
     </div>
   );
 };

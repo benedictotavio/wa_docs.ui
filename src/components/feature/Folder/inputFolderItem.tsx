@@ -63,14 +63,19 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
 
   const addFolder = (folderId: number, level: number) => {
     const newFolderName = prompt("Digite o nome da pasta");
-
-    if (newFolderName) {
+    
+    if (newFolderName !== null && newFolderName.trim().length > 3) {
       createFolder({
         name: newFolderName,
         parentId: folderId,
         projectId: currentProject?.id ?? 0,
         level: level + 1,
       });
+<<<<<<< HEAD
+=======
+
+      // window.location.reload();
+>>>>>>> c7317b5 (feat: add level in model folder)
     }
   };
 
@@ -90,9 +95,18 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
   };
 
   return (
+<<<<<<< HEAD
     <div style={FolderInputStyle} className="d-flex flex-column gap-2 my-2">
       <div className="row">
         <div className="col-9 p-0">
+=======
+    <div
+      style={FolderInputStyle}
+      className="d-flex flex-column align-items-center gap-2 my-2"
+    >
+      <div className="row w-100 d-flex justify-content-between align-items-center">
+        <div className="col-9 d-flex align-items-center">
+>>>>>>> c7317b5 (feat: add level in model folder)
           <button
             onClick={getRequestsByFolderId}
             className="bg-transparent border-0"
@@ -162,6 +176,7 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
           )}
         </div>
 
+<<<<<<< HEAD
         <div className="col-2 p-0">
           <MoreOptions key={folder.folderId} isOpen={isFolderIconOpen}>
             <ListItem className="p-0 m-0">
@@ -171,6 +186,22 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
             </ListItem>
             <ListItem className="p-0 m-0">
               <Button onClick={() => removeFolder(folder.folderId)}>
+=======
+        <div className="col-2">
+          <MoreOptions key={folder.folderId}>
+            <li className={`d-flex flow-row align-items-center`}>
+              <button
+                onClick={() => {
+                  console.log("Folder", folder);
+                  addFolder(folder.folderId, folder.level);
+                }}
+              >
+                <i>+</i> Nova pasta
+              </button>
+            </li>
+            <li>
+              <button onClick={() => removeFolder(folder.folderId)}>
+>>>>>>> c7317b5 (feat: add level in model folder)
                 Excluir
               </Button>
             </ListItem>

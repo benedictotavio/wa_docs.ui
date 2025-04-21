@@ -30,22 +30,6 @@ const useFolder = () => {
     return response;
   };
 
-  const createSubFolder = async (
-    folderName: string,
-    parentId: number,
-    projectId: number
-  ) => {
-    await _fetch(`/folder/subfolder`, {
-      method: "POST",
-      body: JSON.stringify({
-        name: folderName,
-        parentId,
-        projectId,
-      }),
-      includeCredentials: true,
-    });
-  };
-
   const createFolder = async (newFolder: NewFolder) => {
     await _fetch(`/folder`, {
       method: "POST",
@@ -78,7 +62,6 @@ const useFolder = () => {
 
   return {
     getTree,
-    createSubFolder,
     createFolder,
     updateFolder,
     deleteFolder,

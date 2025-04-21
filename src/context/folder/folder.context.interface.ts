@@ -8,11 +8,6 @@ export interface NewFolder {
 }
 
 export interface FolderContextValue {
-  createSubFolder: (
-    folderName: string,
-    projectId: number,
-    parentId: number
-  ) => Promise<void>;
   getTree: (projectId: number, parentId?: number) => Promise<Folder[]>;
   createFolder: (newFolder: NewFolder) => Promise<void>;
   updateFolder: (folderId: number, folderName: string) => Promise<void>;

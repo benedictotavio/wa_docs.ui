@@ -151,6 +151,7 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
           </Modal>
         </div>
 
+<<<<<<< HEAD
         {team && (
           <Dropdown
             width={90}
@@ -161,6 +162,44 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
                 className="mt-3 d-flex flex-column align-items-center btn"
                 onClick={toggleDropdown}
                 width={"100%"}
+=======
+        <Dropdown
+          width={90}
+          onClick={() => setIsArrowIcon(!isArrowIcon)}
+          trigger={
+            <Button className="mt-3 btn-outline-primary w-100 h-100">
+              <span>{currentProject?.name ?? "Selecione um projeto"}</span>
+              <br />
+              <i
+                className="ms-1 fs-5"
+                style={{ lineHeight: 0, fontSize: "1.5rem" }}
+              >
+                &#8964;
+              </i>
+            </Button>
+          }
+        >
+          <List
+            direction="column"
+            className="text-center bg-white rounded-3 border"
+            gap={1.5}
+          >
+            {projects.map((project) => (
+              <li key={project.id} className="mx-1 my-2">
+                <button
+                  onClick={() => changeProject(project.id!)}
+                  className="btn btn-outline-primary"
+                >
+                  {project.name}
+                </button>
+              </li>
+            ))}
+            <li className="d-flex justify-content-center">
+              <button onClick={handleClickCreateFolder}>Criar pasta</button>
+              <button
+                className="badge bg-danger"
+                onClick={handleClickDeleteProject}
+>>>>>>> c7317b5 (feat: add level in model folder)
               >
                 {currentProject?.name ?? "Selecione um projeto"}
                 <HtmlIcon
