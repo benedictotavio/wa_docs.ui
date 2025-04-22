@@ -65,7 +65,7 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
         level: level + 1,
       });
 
-      window.location.reload();
+      // window.location.reload();
     }
   };
 

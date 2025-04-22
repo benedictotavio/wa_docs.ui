@@ -56,7 +56,7 @@ const useRequest = () => {
         includeCredentials: true,
       });
       const data = await response;
-      if (!currentRequest) {
+      if (!currentRequest && data.length > 0) {
         setCurrentRequest(data[0]);
         localStorage.setItem("request", JSON.stringify(data[0].id));
       }
@@ -75,14 +75,15 @@ const useRequest = () => {
         includeCredentials: true,
       });
       const data = await response;
-      setCurrentRequest(data);
+      if (data) {
+        setCurrentRequest(data);
+      }
       localStorage.setItem("request", JSON.stringify(data.id));
       return data;
     } catch (error) {
       console.error(error);
     }
   };
-
   const changeCurrentRequest = async (request: Request | number) => {
     if (typeof request === "number") {
       await getRequestById(request).then((request) => {
@@ -96,8 +97,6 @@ const useRequest = () => {
   };
 
   useMemo(async () => {
-    console.log("Current Request", currentRequest);
-    
     setLoading(true);
     if (currentRequest) return;
     const requestId = localStorage.getItem("request");

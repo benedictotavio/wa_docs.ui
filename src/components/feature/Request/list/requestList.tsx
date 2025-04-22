@@ -7,7 +7,7 @@ export interface RequestListProps {
 
 const RequestList: React.FC<RequestListProps> = ({ requests }) => {
   return (
-    requests.length > 0 && (
+    requests?.length > 0 && (
       <ul className="list-group list-group-flush p-0 m-0">
         {requests.map((request) => (
           <RequestItem key={request.id} request={request} />
