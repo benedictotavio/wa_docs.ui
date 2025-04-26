@@ -75,11 +75,11 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
 
   const handleClickDeleteProject = (e: React.MouseEvent) => {
     e.preventDefault();
-    const confirmDelete = window.confirm(
-      `Tem certeza que deseja excluir projeto ${currentProject?.name}?`
+    const confirmDelete = window.prompt(
+      `Digite "${currentProject?.name}" para confirmar a exclusão do projeto`
     );
 
-    if (confirmDelete) {
+    if (confirmDelete === currentProject?.name) {
       deleteProject(currentProject?.id ?? 0);
     }
   };

@@ -77,6 +77,12 @@ const FormMockServer: React.FC<FormMockServerProps> = ({
       }
       onSubmit={createNewMockServer}
     >
+      <div>
+        <h4>
+          Base URL: <span>{mockServer?.url ?? "https:0.0.0.0:3000/"}</span>{" "}
+          <span>{mockServer?.path ?? ""}</span>
+        </h4>
+      </div>
       <Tabs
         tabsContent={[
           {

@@ -16,8 +16,8 @@ const RequestItem: React.FC<RequestItemProps> = ({ request }) => {
   };
 
   return (
-    <li className="list-group-item">
-      <button className="btn border-0 bg-transparent" onClick={handleClick}>
+    <li className="list-group-item px-0">
+      <button className="btn border-0 bg-transparent px-0" onClick={handleClick}>
         <BoxMethod method={request.method} />
         {request.name}
       </button>

@@ -8,6 +8,7 @@ import { ProjectContext } from "../../../context/project/project.context";
 import Modal from "../../../design/modal/Modal";
 import MoreOptions from "../../ui/moreOptions";
 import FormRequest from "../Request/form/FormRequest";
+import HtmlIcon from "../../../design/icon/htmlIcon/HtmlIcon";
 
 interface FolderInputItemProps {
   folder: Folder;
@@ -23,16 +24,16 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
   const [newFolderName, setNewFolderName] = useState(folder.folderName);
   const [requests, setRequests] = useState<Request[]>([]);
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
+  const [childFolders, setChildFolders] = useState<Folder[]>([]);
 
   const { createFolder, deleteFolder } = useContext(FolderContext);
   const { currentProject } = useContext(ProjectContext);
+  const { updateFolder, getTree } = useContext(FolderContext);
+  const { getRequestByFolderId } = useContext(RequestContext);
 
   const FolderInputStyle: React.CSSProperties = {
     marginLeft: `${folder.parentFolderId !== null ? marginStart : 0}px`,
   };
-
-  const { updateFolder } = useContext(FolderContext);
-  const { getRequestByFolderId } = useContext(RequestContext);
 
   const changeFolderName = () => {
     if (
@@ -41,6 +42,7 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
       newFolderName.trim().length > 3
     ) {
       updateFolder(folder.folderId, newFolderName);
+      folder.folderName = newFolderName;
     }
   };
 
@@ -48,6 +50,9 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
     e.preventDefault();
     setIsFolderIconOpen(!isFolderIconOpen);
     if (!isFolderIconOpen) {
+      getTree(currentProject?.id ?? 0, folder.folderId).then((folders) => {
+        setChildFolders(folders);
+      });
       getRequestByFolderId(folder.folderId).then((requests) => {
         setRequests(requests);
       });
@@ -64,8 +69,6 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
         projectId: currentProject?.id ?? 0,
         level: level + 1,
       });
-
-      // window.location.reload();
     }
   };
 
@@ -85,21 +88,17 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
   };
 
   return (
-    <div
-      style={FolderInputStyle}
-      className="d-flex flex-column align-items-center gap-2 my-2"
-    >
-      <div className="row w-100 d-flex justify-content-between align-items-center">
-
-        <div className="col-9 d-flex align-items-center">
+    <div style={FolderInputStyle} className="d-flex flex-column gap-2 my-2">
+      <div className="row">
+        <div className="col-9 p-0">
           <button
             onClick={getRequestsByFolderId}
             className="bg-transparent border-0"
           >
             {isFolderIconOpen ? (
-              <i className="mx-2">&#128194;</i>
+              <HtmlIcon unicode="&#128194;" size={20.5} />
             ) : (
-              <i className="mx-2">&#128193;</i>
+              <HtmlIcon unicode="&#128193;" size={20} />
             )}
           </button>
           {isInputOpen ? (
@@ -123,21 +122,33 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
                 }
               }}
               onDoubleClick={(e) => {
+                setIsInputOpen(true);
                 e.stopPropagation();
-                setIsInputOpen(false);
               }}
             />
           ) : (
-            <button
-              onClick={() => setIsInputOpen(true)}
-              className="bg-transparent border-0"
-            >
+            <button 
+            onDoubleClick={(e) => {
+              setIsInputOpen(true);
+              e.stopPropagation();
+            }}
+            onClick={getRequestsByFolderId}
+            style={{
+              backgroundColor: "transparent",
+              border: "none",
+              cursor: "pointer",
+              color: "black",
+              fontSize: "1rem",
+              textDecoration: "none",
+              transition: "color 0.3s ease",
+            }}
+            className="bg-transparent border-0">
               {folder.folderName}
             </button>
           )}
         </div>
 
-        <div className="col-2">
+        <div className="col-2 p-0">
           <MoreOptions key={folder.folderId}>
             <li className={`d-flex flow-row align-items-center`}>
               <button onClick={() => addFolder(folder.folderId, folder.level)}>
@@ -161,9 +172,28 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
                 <FormRequest folderId={folder.folderId} />
               </Modal>
             </li>
+            <li>
+              <button type="button" onClick={() => setIsInputOpen(true)}>
+                Renomear
+              </button>
+            </li>
           </MoreOptions>
         </div>
       </div>
+
+      {isFolderIconOpen && (
+        <ul className="d-flex flex-column w-100 p-0 pl-1 gap-1">
+          {childFolders.length > 0 &&
+            childFolders?.map((childFolder) => (
+              <li key={childFolder.folderId} className="d-flex flex-column">
+                <FolderInputItem
+                  folder={childFolder}
+                  marginStart={folder.level * 7.5}
+                />
+              </li>
+            ))}
+        </ul>
+      )}
       {isFolderIconOpen && <RequestList requests={requests} />}
     </div>
   );

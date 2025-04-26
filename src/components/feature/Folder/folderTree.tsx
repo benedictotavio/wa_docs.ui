@@ -14,6 +14,16 @@ const FolderTree: React.FC<FolderTreeProps> = ({ projectId }) => {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
+  const reduceFolders = (folders: Folder[]): Folder[] => {
+    const reducedFolders: Folder[] = [];
+    folders.forEach((folder) => {
+      if (folder.parentFolderId === null) {
+        reducedFolders.push(folder);
+      }
+    });
+    return reducedFolders;
+  };
+
   useMemo(() => {
     getTree(projectId).then((folders) => {
       setFolders(folders);
@@ -23,16 +33,24 @@ const FolderTree: React.FC<FolderTreeProps> = ({ projectId }) => {
   return (
     <div>
       {folders.length > 0 ? (
-        folders.map((folder: Folder) => (
-          <FolderInputItem
-            folder={folder}
-            marginStart={folder.level * 10}
-            key={folder.folderId}
-          />
-        ))
+        <div>
+          {reduceFolders(folders).map((folder) => (
+            <FolderInputItem
+              key={folder.folderId}
+              folder={folder}
+              marginStart={folder.level * 1}
+            />
+          ))}
+        </div>
       ) : (
         <>
-          <Button onClick={() => setIsOpen(!isOpen)}>+ Adicionar pasta</Button>
+          {
+            projectId > 0 && (
+              <Button onClick={() => setIsOpen(!isOpen)}>
+                Adicionar pasta
+              </Button>
+            )
+          }
           {isOpen && (
             <div className="d-flex flex-column">
               <input

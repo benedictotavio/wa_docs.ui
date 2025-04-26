@@ -45,8 +45,6 @@ const RequestPanel: React.FC = () => {
       return;
     }
 
-    console.log("response", response);
-
     setResponse(JSON.stringify(response));
   };
 
