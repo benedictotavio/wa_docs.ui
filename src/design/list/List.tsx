@@ -1,6 +1,4 @@
-import LoadingSpinner from "../../../../design/loading/LoadingSpinner";
-import Skeleton from "../../../../design/loading/Skeleton";
-import styles from "./index.module.css";
+import styles from "./List.module.css";
 
 type ListProps = {
   children?: React.ReactNode;
@@ -12,8 +10,6 @@ type ListProps = {
   margin?: number[];
   selectable?: boolean;
   twoColumns?: boolean;
-  isLoading?: boolean;
-  skeleton?: boolean;
   className?: string;
 };
 
@@ -27,35 +23,9 @@ const List: React.FC<ListProps> = ({
   margin,
   selectable,
   twoColumns = false,
-  isLoading = false,
-  skeleton = false,
-  className,
+  className = "",
 }) => {
-  if (isLoading) {
-    return skeleton ? (
-      <ul className={styles.skeleton}>
-        <li>
-          <Skeleton height="10px" isLoading={false} />
-        </li>
-        <li>
-          <Skeleton height="10px" isLoading={false} />
-        </li>
-        <li>
-          <Skeleton height="10px" isLoading={false} />
-        </li>
-        <li>
-          <Skeleton height="10px" isLoading={false} />
-        </li>
-        <li>
-          <Skeleton height="10px" isLoading={false} />
-        </li>
-      </ul>
-    ) : (
-      <LoadingSpinner />
-    );
-  }
-
-  const defineMargin = (margin: number[] | undefined) => {
+  const defineMargin = (margin?: number[]) => {
     if (margin && margin.length === 4) {
       return `${margin[0]}rem ${margin[1]}rem ${margin[2]}rem ${margin[3]}rem`;
     }
@@ -63,11 +33,10 @@ const List: React.FC<ListProps> = ({
   };
 
   const stylesList: React.CSSProperties = {
-    gap: gap ? `${gap}rem` : undefined,
+    gap: gap ? `${gap}px` : "0",
     display: "flex",
     flexDirection: direction,
     margin: defineMargin(margin),
-    listStyle: "none",
   };
 
   if (isFloat) {
@@ -93,9 +62,9 @@ const List: React.FC<ListProps> = ({
   return (
     <ul
       style={stylesList}
-      className={`${styles.list} ${className} ${selectable ? styles.list_selectable : ""} ${
-        twoColumns ? styles.list_two_columns : ""
-      }`}
+      className={`${styles.list} ${className} ${
+        selectable ? styles.list_selectable : ""
+      } ${twoColumns ? styles.list_two_columns : ""}`}
     >
       {children}
     </ul>

@@ -1,4 +1,4 @@
-import Button from "../button/button";
+import Button from "../button/Button";
 import Skeleton from "../loading/Skeleton";
 import styles from "./Form.module.css";
 

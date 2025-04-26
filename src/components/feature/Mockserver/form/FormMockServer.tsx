@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { RequestMethod } from "../../../../interfaces/request.interface";
 import { MockserverContext } from "../../../../context/mockserver/mockserver.context";
-import InputText from "../../../../design/inputs/InputText/inputText";
+import InputText from "../../../../design/inputs/InputText/InputText";
 import Tabs from "../../../../design/tabs/Tabs";
 import InputBody from "../../Request/input/InputBody";
 import SelectMethod from "../../Request/select/SelectMethod";

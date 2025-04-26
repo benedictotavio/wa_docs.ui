@@ -1,4 +1,4 @@
-import InputText from "../../../../design/inputs/InputText/inputText";
+import InputText from "../../../../design/inputs/InputText/InputText";
 
 interface InputPathProps {
   path: string;

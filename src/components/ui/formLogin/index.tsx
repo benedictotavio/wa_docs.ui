@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import Form from "../../../design/form/Form"
 import { AuthContext } from "../../../context/auth/auth.context"
-import InputText from "../../../design/inputs/InputText/inputText"
+import InputText from "../../../design/inputs/InputText/InputText"
 
 const FormLogin = () => {
 

@@ -1,19 +1,20 @@
 import React, { useContext, useState } from "react";
 import Modal from "../../design/modal/Modal";
 import Form from "../../design/form/Form";
-import InputText from "../../design/inputs/InputText/inputText";
+import InputText from "../../design/inputs/InputText/InputText";
 import { ProjectContext } from "../../context/project/project.context";
 import { AuthContext } from "../../context/auth/auth.context";
 import { TeamContext } from "../../context/team/team.context";
 import Dropdown from "../../design/dropdown/Dropdown";
-import List from "./lists/list";
 import { FolderContext } from "../../context/folder/folder.context";
 import HtmlIcon from "../../design/icon/htmlIcon/HtmlIcon";
-import Button from "../../design/button/button";
+import Button from "../../design/button/Button";
 import image_logo_200 from "../../assets/logo_200w.png";
 import image_logo_100 from "../../assets/logo_100w.png";
 import image_logo_50 from "../../assets/logo_50w.png";
 import Logo from "./logo";
+import List from "../../design/list/List";
+import ListItem from "../../design/list/ListItem";
 
 interface MenuProps {
   children?: React.ReactNode;
@@ -30,11 +31,16 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
   const { user } = useContext(AuthContext);
   const { team } = useContext(TeamContext);
   const { createFolder } = useContext(FolderContext);
-
-  const [isArrowIcon, setIsArrowIcon] = useState(false);
+  
   const [openModal, setOpenModal] = useState(false);
+  const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
+
+  // TODO: Move it to Dropdown component
+  const toggleDropdown = () => {
+    setIsProjectDropdownOpen((prev) => !prev);
+  };
 
   const createProject = (e: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -96,14 +102,19 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
       </div>
 
       <menu className="d-flex flex-column">
-        <div className="d-flex flex-row">
-          <input type="text" className="form-control" placeholder="Pesquisar" />
-          <button
-            className="btn btn-primary"
-            onClick={() => setOpenModal(!openModal)}
+        <div className="row">
+          <InputText
+            type="text"
+            className="form-control col-10"
+            placeholder="Pesquisar"
+          />
+          <Button
+            rounded={4}
+            className="btn btn-primary col-2"
+            onClick={() => console.log("Pesquisar...")}
           >
-            <i>+</i>
-          </button>
+            <HtmlIcon hex="&#x1F50D;" />
+          </Button>
           <Modal
             isOpen={openModal}
             onClose={() => setOpenModal(false)}
@@ -131,49 +142,57 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
 
         <Dropdown
           width={90}
-          onClick={() => setIsArrowIcon(!isArrowIcon)}
+          isDropdownOpen={isProjectDropdownOpen}
+          setIsDropdownOpen={setIsProjectDropdownOpen}
           trigger={
-            <Button className="mt-3">
-              <HtmlIcon unicode="&#8964;" size={28} />
-              <span>{currentProject?.name ?? "Selecione um projeto"}</span>
+            <Button
+              className="mt-3 d-flex flex-column align-items-center btn"
+              onClick={toggleDropdown}
+            >
+              {currentProject?.name ?? "Selecione um projeto"}
+              <HtmlIcon
+                hex="&#8964;"
+                size={24}
+                color="black"
+                lineHeight={0.75}
+              />
             </Button>
           }
         >
           <List
             direction="column"
             className="text-center bg-white rounded-3 border"
-            gap={1.5}
+            gap={0.5}
           >
             {projects.map((project) => (
-              <li key={project.id} className="mx-1 my-2">
-                <button
+              <ListItem key={project.id}>
+                <Button
                   onClick={() => changeProject(project.id!)}
                   className="btn btn-outline-primary"
                 >
                   {project.name}
-                </button>
-              </li>
+                </Button>
+              </ListItem>
             ))}
-            <li className="d-flex justify-content-center">
-              <button onClick={handleClickCreateFolder}>Criar pasta</button>
-              <button
-                className="badge bg-danger"
-                onClick={handleClickDeleteProject}
-              >
-                <HtmlIcon unicode="&#x1F5D1;" />
-                <span>Deletar Projeto</span>
-              </button>
-            </li>
-          </List>
-          <button
-            className="w-100 rounded-bottom"
-            onClick={() => setOpenModal(true)}
-          >
-            Criar projeto
-          </button>
-        </Dropdown>
 
-        <ul className="list-group list-group-flush h-100">{children}</ul>
+            {projects.length > 0 && (
+              <ListItem className="d-flex justify-content-center">
+                <Button onClick={handleClickCreateFolder}>
+                  <HtmlIcon hex="&#x1F4C1;" />
+                  <span>Criar pasta</span>
+                </Button>
+                <Button onClick={handleClickDeleteProject}>
+                  <HtmlIcon hex="&#x1F5D1;" />
+                  <span>Deletar Projeto</span>
+                </Button>
+              </ListItem>
+            )}
+          </List>
+          <Button onClick={() => setOpenModal(!openModal)}>
+            <span>Criar projeto</span>
+          </Button>
+        </Dropdown>
+        <List className="list-group list-group-flush h-100">{children}</List>
       </menu>
     </aside>
   );

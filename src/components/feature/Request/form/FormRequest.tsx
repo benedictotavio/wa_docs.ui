@@ -6,7 +6,7 @@ import TableHeaders from "../tables/TableHeaders";
 import { RequestContext } from "../../../../context/request/request.context";
 import { RequestMethod } from "../../../../interfaces/request.interface";
 import Form from "../../../../design/form/Form";
-import InputText from "../../../../design/inputs/InputText/inputText";
+import InputText from "../../../../design/inputs/InputText/InputText";
 import InputBody from "../input/InputBody";
 
 export interface RequestFormProps {

@@ -2,7 +2,10 @@ import { useContext, useMemo, useState } from "react";
 import { FolderContext } from "../../../context/folder/folder.context";
 import { Folder } from "../../../interfaces/folder.interface";
 import FolderInputItem from "./inputFolderItem";
-import Button from "../../../design/button/button";
+import Button from "../../../design/button/Button";
+import HtmlIcon from "../../../design/icon/htmlIcon/HtmlIcon";
+import Modal from "../../../design/modal/Modal";
+import NewFolderForm from "./newFolderForm";
 
 interface FolderTreeProps {
   projectId: number;
@@ -44,23 +47,20 @@ const FolderTree: React.FC<FolderTreeProps> = ({ projectId }) => {
         </div>
       ) : (
         <>
-          {
-            projectId > 0 && (
-              <Button onClick={() => setIsOpen(!isOpen)}>
-                Adicionar pasta
-              </Button>
-            )
-          }
-          {isOpen && (
-            <div className="d-flex flex-column">
-              <input
-                type="text"
-                placeholder="Nome da pasta"
-                className="w-100"
-              />
-              <Button>Adicionar</Button>
-            </div>
+          {projectId > 0 && (
+            <Button onClick={() => setIsOpen(!isOpen)}>
+              <HtmlIcon hex="&oplus;" />
+              Adicionar pasta
+            </Button>
           )}
+          <Modal
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            isCenter
+            title="Nova pasta"
+          >
+            <NewFolderForm projectId={projectId} />
+          </Modal>
         </>
       )}
     </div>

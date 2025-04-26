@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./Dropdown.module.css";
 
 interface DropdownProps {
@@ -6,9 +6,10 @@ interface DropdownProps {
   children: React.ReactNode;
   right?: number;
   left?: number;
-  onClick?: () => void;
   absolute?: boolean;
   width?: string | number;
+  isDropdownOpen: boolean;
+  setIsDropdownOpen: (open: boolean) => void;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -16,27 +17,17 @@ const Dropdown: React.FC<DropdownProps> = ({
   children,
   right,
   left,
-  onClick,
   absolute = true,
   width = "auto",
+  isDropdownOpen = false,
+  setIsDropdownOpen,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const onClickDropdown = () => {
-    toggleDropdown();
-    if (onClick) {
-      onClick();
-    }
-  };
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const dropdownStyle: React.CSSProperties = {
     right: right !== undefined ? `${right}px` : undefined,
     left: left !== undefined ? `${left}px` : undefined,
-    width: `${width}%`,
+    width: typeof width === "number" ? `${width}%` : width,
   };
 
   const dropdownStyleAbsolute: React.CSSProperties = {
@@ -44,42 +35,49 @@ const Dropdown: React.FC<DropdownProps> = ({
     position: absolute ? "absolute" : "relative",
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setIsDropdownOpen]);
+
   return (
-    <div className={styles.dropdown}>
+    <div className={styles.dropdown} ref={dropdownRef}>
       <div
-        role="button"
-        tabIndex={0}
         className={styles.dropdownButton}
         id="options-menu"
         aria-haspopup="true"
-        aria-expanded="true"
-        onClick={onClickDropdown}
-        onMouseDown={(e) => e.preventDefault()}
+        aria-expanded={isDropdownOpen}
       >
         {trigger}
       </div>
 
-      {isOpen && (
+      {isDropdownOpen && (
         <div
-          className={`${styles.dropdownMenu}`}
+          className={styles.dropdownMenu}
           style={absolute ? dropdownStyleAbsolute : dropdownStyle}
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="options-menu"
+          tabIndex={0}
+          onMouseDown={(e) => e.preventDefault()}
         >
-          <div
-            id="options-menu"
-            aria-labelledby="options-menu"
-            style={dropdownStyle}
-            className={`${styles.dropdownMenu}  py-1`}
-            role="menu"
-            aria-orientation="vertical"
-          >
-            {children}
-          </div>
+          {children}
         </div>
       )}
     </div>
   );
 };
+
 export default Dropdown;

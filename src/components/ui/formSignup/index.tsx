@@ -1,7 +1,7 @@
 import { FormEvent, useContext, useState } from "react";
 import { AuthContext } from "../../../context/auth/auth.context";
 import Form from "../../../design/form/Form";
-import InputText from "../../../design/inputs/InputText/inputText";
+import InputText from "../../../design/inputs/InputText/InputText";
 import { Link } from "react-router-dom";
 
 const FormSignup = () => {

@@ -1,7 +1,5 @@
 .button {
   background-color: linear-gradient(103deg, #4D81D5 0%, #0047BA 100%);
-  min-width: 100px;
-  min-height: 50px;
   cursor: pointer;
   border-radius: 15px;
   font-weight: bold;

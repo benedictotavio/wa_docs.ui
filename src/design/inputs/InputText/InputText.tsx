@@ -1,4 +1,4 @@
-import styles from "./inputText.module.css";
+import styles from "./InputText.module.css";
 
 interface InputTextProps {
   type: "text" | "password" | "email" | "number" | "tel" | "url";

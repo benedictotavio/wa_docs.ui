@@ -9,6 +9,8 @@ import Modal from "../../../design/modal/Modal";
 import MoreOptions from "../../ui/moreOptions";
 import FormRequest from "../Request/form/FormRequest";
 import HtmlIcon from "../../../design/icon/htmlIcon/HtmlIcon";
+import ListItem from "../../../design/list/ListItem";
+import Button from "../../../design/button/Button";
 
 interface FolderInputItemProps {
   folder: Folder;
@@ -96,9 +98,9 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
             className="bg-transparent border-0"
           >
             {isFolderIconOpen ? (
-              <HtmlIcon unicode="&#128194;" size={20.5} />
+              <HtmlIcon hex="&#128194;" size={20.5} />
             ) : (
-              <HtmlIcon unicode="&#128193;" size={20} />
+              <HtmlIcon hex="&#128193;" size={20} />
             )}
           </button>
           {isInputOpen ? (
@@ -127,22 +129,23 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
               }}
             />
           ) : (
-            <button 
-            onDoubleClick={(e) => {
-              setIsInputOpen(true);
-              e.stopPropagation();
-            }}
-            onClick={getRequestsByFolderId}
-            style={{
-              backgroundColor: "transparent",
-              border: "none",
-              cursor: "pointer",
-              color: "black",
-              fontSize: "1rem",
-              textDecoration: "none",
-              transition: "color 0.3s ease",
-            }}
-            className="bg-transparent border-0">
+            <button
+              onDoubleClick={(e) => {
+                setIsInputOpen(true);
+                e.stopPropagation();
+              }}
+              onClick={getRequestsByFolderId}
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                cursor: "pointer",
+                color: "black",
+                fontSize: "1rem",
+                textDecoration: "none",
+                transition: "color 0.3s ease",
+              }}
+              className="bg-transparent border-0"
+            >
               {folder.folderName}
             </button>
           )}
@@ -150,17 +153,17 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
 
         <div className="col-2 p-0">
           <MoreOptions key={folder.folderId}>
-            <li className={`d-flex flow-row align-items-center`}>
+            <ListItem className="p-0 m-0">
               <button onClick={() => addFolder(folder.folderId, folder.level)}>
                 <i>+</i> Nova pasta
               </button>
-            </li>
-            <li>
-              <button onClick={() => removeFolder(folder.folderId)}>
+            </ListItem>
+            <ListItem className="p-0 m-0">
+              <Button onClick={() => removeFolder(folder.folderId)}>
                 Excluir
-              </button>
-            </li>
-            <li>
+              </Button>
+            </ListItem>
+            <ListItem className="p-0 m-0">
               <button type="button" onClick={() => setIsRequestModalOpen(true)}>
                 <i>+</i> Criar requisição
               </button>
@@ -171,12 +174,12 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
               >
                 <FormRequest folderId={folder.folderId} />
               </Modal>
-            </li>
-            <li>
-              <button type="button" onClick={() => setIsInputOpen(true)}>
+            </ListItem>
+            <ListItem className="p-0 m-0">
+              <Button type="button" onClick={() => setIsInputOpen(true)}>
                 Renomear
-              </button>
-            </li>
+              </Button>
+            </ListItem>
           </MoreOptions>
         </div>
       </div>

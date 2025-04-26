@@ -1,5 +1,5 @@
 import { useState } from "react";
-import InputText from "../../../../design/inputs/InputText/inputText";
+import InputText from "../../../../design/inputs/InputText/InputText";
 
 interface TableHeadersProps {
   headers: { key: string; value: string }[];

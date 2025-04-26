@@ -1,6 +1,7 @@
 .icon {
   width: 1em;
   height: auto;
+  padding: 0;
   margin: 0;
   vertical-align: -0.15em;
   fill: currentColor;
