@@ -4,33 +4,33 @@ import { ProjectContext } from "./project.context";
 
 export const ProjectProvider = ({ children }: { children: ReactNode }) => {
   const {
-    projects,
     loading,
     addProject,
     updateProject,
     deleteProject,
     changeCurrentProject,
     currentProject,
+    getProjects,
   } = useProject();
 
   const value = useMemo(
     () => ({
-      projects,
       loading,
       addProject,
       updateProject,
       deleteProject,
       changeCurrentProject,
       currentProject,
+      getProjects,
     }),
     [
-      projects,
       loading,
       addProject,
       updateProject,
       deleteProject,
       changeCurrentProject,
       currentProject,
+      getProjects,
     ]
   );
 

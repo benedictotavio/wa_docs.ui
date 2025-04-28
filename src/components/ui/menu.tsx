@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import Modal from "../../design/modal/Modal";
 import Form from "../../design/form/Form";
 import InputText from "../../design/inputs/InputText/InputText";
@@ -15,6 +15,7 @@ import image_logo_50 from "../../assets/logo_50w.png";
 import Logo from "./logo";
 import List from "../../design/list/List";
 import ListItem from "../../design/list/ListItem";
+import { Project } from "../../interfaces/project.interfaces";
 
 interface MenuProps {
   children?: React.ReactNode;
@@ -23,7 +24,7 @@ interface MenuProps {
 const Menu: React.FC<MenuProps> = ({ children }) => {
   const {
     addProject,
-    projects,
+    getProjects,
     currentProject,
     changeCurrentProject,
     deleteProject,
@@ -31,11 +32,12 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
   const { user } = useContext(AuthContext);
   const { team } = useContext(TeamContext);
   const { createFolder } = useContext(FolderContext);
-  
+
   const [openModal, setOpenModal] = useState(false);
   const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
+  const [projects, setProjects] = useState<Project[]>([]);
 
   // TODO: Move it to Dropdown component
   const toggleDropdown = () => {
@@ -89,6 +91,14 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
       deleteProject(currentProject?.id ?? 0);
     }
   };
+
+  useMemo(() => {
+    if (user) {
+      getProjects(user.id, team.id).then((projects) => {
+        setProjects(projects ?? []);
+      });
+    }
+  }, [user, team]);
 
   return (
     <aside className="mt-5 px-0 mx-0 bg-transparent shadow-sm bg-none">

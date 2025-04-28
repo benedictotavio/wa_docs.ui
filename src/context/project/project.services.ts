@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Project } from "../../interfaces/project.interfaces";
 import { useNavigate } from "react-router-dom";
 import _fetch from "../utils/fetch";
@@ -10,16 +10,18 @@ const useProject = () => {
 
   const navigate = useNavigate();
 
-  const getProjects = async () => {
+  const getProjects = async (
+    userId?: number,
+    teamId?: number
+  ) => {
     setLoading(true);
     try {
-      const userId = localStorage.getItem("user");
       if (!userId) return;
-
-      const response = await _fetch(`/project?owner=${userId}`, {
+      if (!teamId) return;
+      const response = await _fetch(`/project?owner=${userId}&team=${teamId}`, {
         includeCredentials: true,
       });
-
+      
       setProjects(response);
 
       if (response.length > 0) {
@@ -37,15 +39,14 @@ const useProject = () => {
             sessionStorage.setItem("project", response[0].id);
           }
         }
+        return response;
       }
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const addProject = async (project: Project) => {
+  };  const addProject = async (project: Project) => {
     try {
       const data = await _fetch(`/project`, {
         method: "POST",
@@ -109,10 +110,6 @@ const useProject = () => {
     sessionStorage.setItem("project", JSON.stringify(projectId));
     setCurrentProject(project || null);
   };
-
-  useMemo(() => {
-    getProjects();
-  }, []);
 
   return {
     projects,
