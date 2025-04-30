@@ -110,13 +110,15 @@ const UserProfileMenuProps: React.FC = () => {
                   </>
                 )}
                 <ListItem className="d-flex justify-content-between">
-                  <button onClick={() => setIsModalOpen(!isModalOpen)}>
+                  <Button onClick={() => setIsModalOpen(!isModalOpen)}>
                     <HtmlIcon hex="&oplus;" />
                     Criar equipe
-                  </button>
+                  </Button>
                 </ListItem>
                 <ListItem>
-                  <Button onClick={deleteActualTeam}>Deletar Equipe</Button>
+                  {
+                    team && <Button onClick={deleteActualTeam}>Deletar Equipe</Button>
+                  }
                 </ListItem>
               </List>
 

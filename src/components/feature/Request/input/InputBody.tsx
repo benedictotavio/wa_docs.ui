@@ -25,6 +25,7 @@ const InputBody: React.FC<InputBodyProps> = ({
     { value: "xml", label: "XML" },
     { value: "html", label: "HTML" },
     { value: "javascript", label: "JavaScript" },
+    {value: "xml", label: "XML"},
   ];
 
   return (

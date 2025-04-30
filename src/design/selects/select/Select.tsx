@@ -21,8 +21,10 @@ const Select: React.FC<SelectProps> = ({
       onChange={onChange}
       className={className + " " + styles.select}
     >
-      {options.map((option) => (
-        <Option key={option.value} value={option.value} label={option.value} />
+      {options.map((option, index) => (
+        <Option key={option.value} value={option.value} label={option.value} color={
+          index % 2 === 0 ? "#2196F3" : "#FF9800"
+        } />
       ))}
     </select>
   );
