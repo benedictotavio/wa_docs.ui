@@ -54,6 +54,7 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
         teamId: team?.id,
       });
       setOpenModal(false);
+      window.location.reload();
     } catch (error) {
       window.alert("Erro ao criar projeto" + error);
     }
@@ -93,7 +94,7 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
   };
 
   useMemo(() => {
-    if (user) {
+    if (user && team) {
       getProjects(user.id, team.id).then((projects) => {
         setProjects(projects ?? []);
       });

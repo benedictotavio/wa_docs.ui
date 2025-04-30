@@ -19,6 +19,10 @@ const CreateNewTeamForm: React.FC = () => {
       description: newTeamDescription,
       ownerId: user?.id,
     });
+    window.alert("Equipe criada com sucesso!"); 
+    setInterval(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   return (

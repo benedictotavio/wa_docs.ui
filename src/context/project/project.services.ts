@@ -10,10 +10,7 @@ const useProject = () => {
 
   const navigate = useNavigate();
 
-  const getProjects = async (
-    userId?: number,
-    teamId?: number
-  ) => {
+  const getProjects = async (userId?: number, teamId?: number) => {
     setLoading(true);
     try {
       if (!userId) return;
@@ -21,7 +18,7 @@ const useProject = () => {
       const response = await _fetch(`/project?owner=${userId}&team=${teamId}`, {
         includeCredentials: true,
       });
-      
+
       setProjects(response);
 
       if (response.length > 0) {
@@ -40,13 +37,17 @@ const useProject = () => {
           }
         }
         return response;
+      } else {
+        setCurrentProject(null);
       }
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
-  };  const addProject = async (project: Project) => {
+  };
+
+  const addProject = async (project: Project) => {
     try {
       const data = await _fetch(`/project`, {
         method: "POST",
@@ -65,7 +66,7 @@ const useProject = () => {
           ownerId: data.ownerId,
         },
       ]);
-      setCurrentProject(data);
+      changeCurrentProject(data.id);
     } catch (error) {
       console.error(error);
     }

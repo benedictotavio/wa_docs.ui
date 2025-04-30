@@ -16,11 +16,36 @@ const UserProfileMenuProps: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { user } = useContext(AuthContext);
-  const { teams, changeActualTeam } = useContext(TeamContext);
+  const { teams, changeActualTeam, deleteTeam, team } = useContext(TeamContext);
   const { logout } = useContext(AuthContext);
 
   const changeTeam = (team: Team) => {
     changeActualTeam(team);
+  };
+
+  const validTeamNameOnDelete = () => {
+    const teamName = window.prompt(
+      `Digite "${team.name}" para confirmar a exclusão da equipe.`
+    );
+    return (
+      teamName?.trim().toLocaleUpperCase() ===
+      team.name.trim().toLocaleUpperCase()
+    );
+  };
+
+  const deleteActualTeam = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (team.id) {
+      if (validTeamNameOnDelete()) {
+        {
+          deleteTeam(team.id);
+          window.alert("Equipe deletada com sucesso!");
+          
+        }
+      } else {
+        window.alert("Nome da equipe incorreto!");
+      }
+    }
   };
 
   // TODO: Move it to Dropdown component
@@ -64,37 +89,37 @@ const UserProfileMenuProps: React.FC = () => {
               <ListItem>
                 <NavLink to="/settings">Configurações</NavLink>
               </ListItem>
-              {teams.length > 0 ? (
-                <List direction="column" gap={0}>
-                  <ListItem>Equipes</ListItem>
-                  <ListItem>
-                    <List direction="column" gap={1}>
-                      {teams?.map((team, index) => (
-                        <ListItem
-                          key={team.team_id ? team.team_id + index : index}
-                        >
-                          <Button onClick={() => changeTeam(team)}>
-                            {team.name}
-                          </Button>
-                        </ListItem>
-                      ))}
-                    </List>
-                  </ListItem>
-                  <ListItem className="d-flex justify-content-between">
-                    <button onClick={() => setIsModalOpen(!isModalOpen)}>
-                      <HtmlIcon hex="&oplus;" />
-                      Criar equipe
-                    </button>
-                  </ListItem>
-                </List>
-              ) : (
-                <ListItem>
-                  <Button onClick={() => setIsModalOpen(!isModalOpen)}>
+
+              <List direction="column" gap={0}>
+                {teams.length > 0 && (
+                  <>
+                    <ListItem>Equipes</ListItem>
+                    <ListItem>
+                      <List direction="column" gap={1}>
+                        {teams?.map((team, index) => (
+                          <ListItem
+                            key={team.team_id ? team.team_id + index : index}
+                          >
+                            <Button onClick={() => changeTeam(team)}>
+                              {team.name}
+                            </Button>
+                          </ListItem>
+                        ))}
+                      </List>
+                    </ListItem>
+                  </>
+                )}
+                <ListItem className="d-flex justify-content-between">
+                  <button onClick={() => setIsModalOpen(!isModalOpen)}>
                     <HtmlIcon hex="&oplus;" />
                     Criar equipe
-                  </Button>
+                  </button>
                 </ListItem>
-              )}
+                <ListItem>
+                  <Button onClick={deleteActualTeam}>Deletar Equipe</Button>
+                </ListItem>
+              </List>
+
               <div className="divider"></div>
               <ListItem>
                 <Button onClick={logout}>Sair</Button>
