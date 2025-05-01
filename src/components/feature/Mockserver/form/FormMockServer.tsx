@@ -76,6 +76,7 @@ const FormMockServer: React.FC<FormMockServerProps> = ({
         path.length <= 0 && name.length <= 0 && bodyResponse.length <= 0
       }
       onSubmit={createNewMockServer}
+      buttonText="Criar MockServer"
     >
       <div>
         <h4>

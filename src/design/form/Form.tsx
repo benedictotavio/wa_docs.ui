@@ -45,7 +45,7 @@ const Form: React.FC<FormProps> = ({
     <form className={styles.form} onSubmit={onSubmit} style={formStyles}>
       {children}
       {!buttonDisabled && (
-        <Button className={styles.button} type="submit">
+        <Button className={styles.button} type="submit" width={"100%"}>
           {buttonText}
         </Button>
       )}

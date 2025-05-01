@@ -36,6 +36,7 @@ const MockServerList: React.FC = () => {
           <Modal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
+            className="p-0 m-0"
             isCenter
           >
             <FormMockServer projectId={currentProject?.id ?? 0} />

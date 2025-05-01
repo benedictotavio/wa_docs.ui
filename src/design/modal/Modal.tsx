@@ -8,6 +8,7 @@ type ModalProps = {
   title?: string;
   height?: number;
   isCenter?: boolean;
+  className?: string;
 };
 
 const Modal: React.FC<ModalProps> = ({
@@ -17,6 +18,7 @@ const Modal: React.FC<ModalProps> = ({
   title,
   height,
   isCenter,
+  className = "",
 }) => {
   const modalStyles: React.CSSProperties = {
     minHeight: height ? `${height}vh` : "auto",
@@ -28,7 +30,11 @@ const Modal: React.FC<ModalProps> = ({
   };
 
   return (
-    <div className={isOpen ? styles.modal_overlay : styles.modal_closed}>
+    <div
+      className={`${className} ${
+        isOpen ? styles.modal_overlay : styles.modal_closed
+      }`}
+    >
       <div style={modalStyles} className={styles.modal_content}>
         <div className={styles.modal_close_row}>
           <button className={styles.close_button} onClick={onClose}>

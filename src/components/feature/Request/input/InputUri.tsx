@@ -8,7 +8,7 @@ const InputUri: React.FC<InputUriProps> = ({ value, onChange, className }) => {
   return (
     <input
       type="text"
-      className={`${className} form-control w-100`}
+      className={`${className} w-100 px-3 py-2 h-100`}
       placeholder="https://example.com"
       value={value}
       onChange={onChange}
