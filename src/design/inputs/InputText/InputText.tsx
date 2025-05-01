@@ -16,7 +16,7 @@ const InputText = ({
   placeholder,
   onChange,
   value,
-  className,
+  className = "",
   width,
   isRequired = false,
   isReadOnly = false,

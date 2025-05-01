@@ -122,6 +122,26 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
                   changeFolderName();
                   setIsInputOpen(false);
                 }
+
+                if (e.key === "Escape") {
+                  setIsInputOpen(false);
+                }
+
+                if (e.key === "ArrowDown") {
+                  e.preventDefault();
+                  const nextInput = document.activeElement?.nextElementSibling;
+                  if (nextInput instanceof HTMLInputElement) {
+                    nextInput.focus();
+                  }
+                }
+
+                if (e.key === "ArrowUp") {
+                  e.preventDefault();
+                  const previousInput = document.activeElement?.previousElementSibling;
+                  if (previousInput instanceof HTMLInputElement) {
+                    previousInput.focus();
+                  }
+                }
               }}
               onDoubleClick={(e) => {
                 setIsInputOpen(true);
@@ -129,34 +149,25 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
               }}
             />
           ) : (
-            <button
+            <Button
               onDoubleClick={(e) => {
                 setIsInputOpen(true);
                 e.stopPropagation();
               }}
               onClick={getRequestsByFolderId}
-              style={{
-                backgroundColor: "transparent",
-                border: "none",
-                cursor: "pointer",
-                color: "black",
-                fontSize: "1rem",
-                textDecoration: "none",
-                transition: "color 0.3s ease",
-              }}
-              className="bg-transparent border-0"
+              className="bg-transparent border-0 bg-transparent text-decoration-none"
             >
               {folder.folderName}
-            </button>
+            </Button>
           )}
         </div>
 
         <div className="col-2 p-0">
-          <MoreOptions key={folder.folderId}>
+          <MoreOptions key={folder.folderId} isOpen={isFolderIconOpen}>
             <ListItem className="p-0 m-0">
-              <button onClick={() => addFolder(folder.folderId, folder.level)}>
-                <i>+</i> Nova pasta
-              </button>
+              <Button onClick={() => addFolder(folder.folderId, folder.level)}>
+                Nova pasta
+              </Button>
             </ListItem>
             <ListItem className="p-0 m-0">
               <Button onClick={() => removeFolder(folder.folderId)}>
@@ -164,16 +175,9 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
               </Button>
             </ListItem>
             <ListItem className="p-0 m-0">
-              <button type="button" onClick={() => setIsRequestModalOpen(true)}>
+              <Button type="button" onClick={() => setIsRequestModalOpen(true)}>
                 <i>+</i> Criar requisição
-              </button>
-              <Modal
-                isOpen={isRequestModalOpen}
-                onClose={() => setIsRequestModalOpen(false)}
-                isCenter
-              >
-                <FormRequest folderId={folder.folderId} />
-              </Modal>
+              </Button>
             </ListItem>
             <ListItem className="p-0 m-0">
               <Button type="button" onClick={() => setIsInputOpen(true)}>
@@ -197,7 +201,16 @@ const FolderInputItem: React.FC<FolderInputItemProps> = ({
             ))}
         </ul>
       )}
+
       {isFolderIconOpen && <RequestList requests={requests} />}
+
+      <Modal
+        isOpen={isRequestModalOpen}
+        onClose={() => setIsRequestModalOpen(false)}
+        isCenter
+      >
+        <FormRequest folderId={folder.folderId} />
+      </Modal>
     </div>
   );
 };

@@ -151,58 +151,62 @@ const Menu: React.FC<MenuProps> = ({ children }) => {
           </Modal>
         </div>
 
-        <Dropdown
-          width={90}
-          isDropdownOpen={isProjectDropdownOpen}
-          setIsDropdownOpen={setIsProjectDropdownOpen}
-          trigger={
-            <Button
-              className="mt-3 d-flex flex-column align-items-center btn"
-              onClick={toggleDropdown}
-            >
-              {currentProject?.name ?? "Selecione um projeto"}
-              <HtmlIcon
-                hex="&#8964;"
-                size={24}
-                color="black"
-                lineHeight={0.75}
-              />
-            </Button>
-          }
-        >
-          <List
-            direction="column"
-            className="text-center bg-white rounded-3 border"
-            gap={0.5}
+        {team && (
+          <Dropdown
+            width={90}
+            isDropdownOpen={isProjectDropdownOpen}
+            setIsDropdownOpen={setIsProjectDropdownOpen}
+            trigger={
+              <Button
+                className="mt-3 d-flex flex-column align-items-center btn"
+                onClick={toggleDropdown}
+                width={"100%"}
+              >
+                {currentProject?.name ?? "Selecione um projeto"}
+                <HtmlIcon
+                  hex="&#8964;"
+                  size={24}
+                  color="black"
+                  lineHeight={0.75}
+                />
+              </Button>
+            }
           >
-            {projects.map((project) => (
-              <ListItem key={project.id}>
-                <Button
-                  onClick={() => changeProject(project.id!)}
-                  className="btn btn-outline-primary"
-                >
-                  {project.name}
-                </Button>
-              </ListItem>
-            ))}
+            <List
+              direction="column"
+              className="text-center bg-white rounded-3 border"
+              gap={0.5}
+            >
+              {projects.map((project) => (
+                <ListItem key={project.id}>
+                  <Button
+                    onClick={() => changeProject(project.id!)}
+                    className="btn btn-outline-primary"
+                    width={"100%"}
+                  >
+                    {project.name}
+                  </Button>
+                </ListItem>
+              ))}
 
-            {projects.length > 0 && (
-              <ListItem className="d-flex justify-content-center">
-                <Button onClick={handleClickCreateFolder}>
-                  <HtmlIcon hex="&#x1F4C1;" />
-                  <span>Criar pasta</span>
-                </Button>
-                <Button onClick={handleClickDeleteProject}>
-                  <HtmlIcon hex="&#x1F5D1;" />
-                  <span>Deletar Projeto</span>
-                </Button>
-              </ListItem>
-            )}
-          </List>
-          <Button onClick={() => setOpenModal(!openModal)}>
-            <span>Criar projeto</span>
-          </Button>
-        </Dropdown>
+              {projects.length > 0 && (
+                <ListItem className="d-flex justify-content-center">
+                  <Button onClick={handleClickCreateFolder}>
+                    <HtmlIcon hex="&#x1F4C1;" />
+                    <span>Criar pasta</span>
+                  </Button>
+                  <Button onClick={handleClickDeleteProject}>
+                    <HtmlIcon hex="&#x1F5D1;" />
+                    <span>Deletar Projeto</span>
+                  </Button>
+                </ListItem>
+              )}
+            </List>
+            <Button onClick={() => setOpenModal(!openModal)} width={"100%"}>
+              Criar projeto
+            </Button>
+          </Dropdown>
+        )}
         <List className="list-group list-group-flush h-100">{children}</List>
       </menu>
     </aside>

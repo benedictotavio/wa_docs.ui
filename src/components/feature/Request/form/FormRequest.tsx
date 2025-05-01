@@ -14,6 +14,7 @@ export interface RequestFormProps {
 }
 
 const FormRequest: React.FC<RequestFormProps> = ({ folderId }) => {
+
   const [newHeaderKey, setNewHeaderKey] = useState("");
   const [newHeaderValue, setNewHeaderValue] = useState("");
   const [headers, setHeaders] = useState<{ key: string; value: string }[]>([]);
@@ -66,11 +67,12 @@ const FormRequest: React.FC<RequestFormProps> = ({ folderId }) => {
         onChange={(event) => setRequestName(event.target.value)}
         type="text"
         placeholder="Nome da Requisição"
-        isRequired
+        
       />
       <SelectMethod
         value={method}
         onChange={(event) => setMethod(event.target.value as RequestMethod)}
+        setValue={setMethod}
       />
       <InputUri value={uri} onChange={(event) => setUri(event.target.value)} />
       <Tabs

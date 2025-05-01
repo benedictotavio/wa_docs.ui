@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Select from "../../../../design/selects/select/Select";
 import { RequestMethod } from "../../../../interfaces/request.interface";
 
@@ -6,15 +5,22 @@ interface SelectMethodProps {
   value: RequestMethod;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   className?: string;
+  setValue: (value: RequestMethod) => void;
 }
 
 const SelectMethod: React.FC<SelectMethodProps> = ({
   value,
   onChange,
-  className,
+  className = "",
+  setValue
 }) => {
 
-  const [selectedValue, setSelectedValue] = useState(value);
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setValue(event.target.value as RequestMethod);
+    value = event.target.value as RequestMethod;
+    onChange(event);
+  };
+
   const options: { value: RequestMethod; label: string }[] = [
     { value: RequestMethod.GET, label: "GET" },
     { value: RequestMethod.POST, label: "POST" },
@@ -25,18 +31,12 @@ const SelectMethod: React.FC<SelectMethodProps> = ({
     { value: RequestMethod.OPTIONS, label: "OPTIONS" },
   ];
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(event.target.value);
-    setSelectedValue(event.target.value as RequestMethod);
-    onChange(event);
-  };
-
   return (
     <Select
-      value={selectedValue}
+      value={value}
       onChange={handleChange}
       options={options}
-      className={`${className}w-100`}
+      className={`${className}`}
     />
   );
 };

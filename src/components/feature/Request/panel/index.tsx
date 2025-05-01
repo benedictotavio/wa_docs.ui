@@ -53,6 +53,7 @@ const RequestPanel: React.FC = () => {
       <div className="d-flex flex-row justify-content-center my-3 w-100 container-fluid">
         <div className="w-100 h-100 d-flex flex-row justify-content-center">
           <SelectMethod
+            setValue={setMethod}
             value={currentRequest?.method ?? method}
             onChange={(event) => {
               setMethod(event.target.value as RequestMethod);
@@ -80,7 +81,7 @@ const RequestPanel: React.FC = () => {
             title: "Headers",
             content: (
               <TableHeaders
-                headers={headers}
+                headers={JSON.parse(currentRequest?.headers ?? "[]") ?? headers}
                 newHeaderKey={newHeaderKey}
                 newHeaderValue={newHeaderValue}
                 setNewHeaderKey={setNewHeaderKey}
@@ -93,7 +94,7 @@ const RequestPanel: React.FC = () => {
             title: "Body",
             content: (
               <InputBody
-                value={body}
+                value={currentRequest?.body ?? body}
                 onChange={(e) => setBody(e.target.value)}
                 code="JSON"
               />
@@ -101,7 +102,7 @@ const RequestPanel: React.FC = () => {
           },
           {
             title: "Auth",
-            content: <BoxResponse response={response} />,
+            content: <h3>Autenticação</h3>,
           },
           {
             title: "Vars",

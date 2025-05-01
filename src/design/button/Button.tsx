@@ -3,10 +3,11 @@ import styles from "./Button.module.css";
 interface ButtonProps {
   children?: React.ReactNode;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onDoubleClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
   type?: "button" | "submit" | "reset";
   rounded?: boolean | number;
-  width?: number;
+  width?: number | string;
   isTransparent?: boolean;
 }
 
@@ -18,14 +19,19 @@ const Button: React.FC<ButtonProps> = ({
   rounded = false,
   width,
   isTransparent = false,
+  onDoubleClick,
 }) => {
   const buttonStyles: React.CSSProperties = {
-    width: "100%",
+    width: "auto",
     borderRadius: "1px",
   };
 
   if (width) {
-    buttonStyles.width = `${width}px`;
+    if (typeof width === "number") {
+      buttonStyles.width = `${width}px`;
+    } else {
+      buttonStyles.width = width;
+    }
   }
 
   if (rounded) {
@@ -46,6 +52,7 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       className={styles.button + " " + className}
       onClick={onClick}
+      onDoubleClick={onDoubleClick}
       style={buttonStyles}
     >
       {children}

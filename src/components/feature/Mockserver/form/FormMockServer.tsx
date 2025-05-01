@@ -90,13 +90,6 @@ const FormMockServer: React.FC<FormMockServerProps> = ({
             content: (
               <>
                 <InputText
-                  value={mockServer?.url ?? ""}
-                  type="url"
-                  placeholder="Nome do Mock Server"
-                  isRequired
-                  isReadOnly
-                />
-                <InputText
                   value={name}
                   onChange={(event) => setName(event.target.value)}
                   type="text"
@@ -104,6 +97,7 @@ const FormMockServer: React.FC<FormMockServerProps> = ({
                   isRequired
                 />
                 <SelectMethod
+                  setValue={setMethod}
                   value={method}
                   onChange={(event) =>
                     setMethod(event.target.value as RequestMethod)
