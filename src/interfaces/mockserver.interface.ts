@@ -1,9 +1,11 @@
+import { RequestMethod } from "./request.interface";
+
 export interface Mockserver {
   id?: number;
   name: string;
-  url?: string;
+  baseUrl?: string;
   path: string;
-  method: string;
+  method: RequestMethod;
   body?: string;
   headers: string;
   projectId: number;

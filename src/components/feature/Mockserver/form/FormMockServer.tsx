@@ -21,7 +21,9 @@ const FormMockServer: React.FC<FormMockServerProps> = ({
 }) => {
   const [name, setName] = useState(mockServer?.name ?? "");
   const [path, setPath] = useState(mockServer?.path ?? "");
-  const [method, setMethod] = useState<RequestMethod>(RequestMethod.GET);
+  const [method, setMethod] = useState<RequestMethod>(
+    mockServer?.method ?? RequestMethod.GET
+  );
   const [body, setBody] = useState(mockServer?.body ?? "");
   const [newHeaderKey, setNewHeaderKey] = useState("");
   const [newHeaderValue, setNewHeaderValue] = useState("");
@@ -76,14 +78,8 @@ const FormMockServer: React.FC<FormMockServerProps> = ({
         path.length <= 0 && name.length <= 0 && bodyResponse.length <= 0
       }
       onSubmit={createNewMockServer}
-      buttonText="Criar MockServer"
     >
-      <div>
-        <h4>
-          Base URL: <span>{mockServer?.url ?? "https:0.0.0.0:3000/"}</span>{" "}
-          <span>{mockServer?.path ?? ""}</span>
-        </h4>
-      </div>
+    
       <Tabs
         tabsContent={[
           {
